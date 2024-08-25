@@ -1,7 +1,7 @@
 local wezterm = require("wezterm")
 
-return function(pane)
-	local cwd_uri = pane:get_current_working_dir()
+return function(window)
+	local cwd_uri = window:active_pane():get_current_working_dir()
 	local hostname = ""
 
 	if type(cwd_uri) == "userdata" then
@@ -23,5 +23,5 @@ return function(pane)
 		hostname = hostname:sub(1, dot - 1)
 	end
 
-	return { Text = hostname }
+	return hostname
 end
