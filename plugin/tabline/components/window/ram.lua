@@ -40,7 +40,7 @@ return function()
 	end
 
 	if config.opts.options.icons_enabled then
-		ram = wezterm.nerdfonts.md_memory .. " " .. ram
+		ram = wezterm.nerdfonts.cod_server .. " " .. ram
 	end
 
 	return ram
