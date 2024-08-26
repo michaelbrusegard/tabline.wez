@@ -50,8 +50,10 @@ local function insert_section_separators(components, is_left)
 	local i = 1
 	while i <= #components do
 		if type(components[i]) == "table" and components[i].Text and i < #components then
+			table.insert(components, i + 1, space)
 			table.insert(components, i + 1, is_left and left_section_separator or right_section_separator)
-			i = i + 1
+			table.insert(components, i + 1, space)
+			i = i + 3
 		end
 		i = i + 1
 	end

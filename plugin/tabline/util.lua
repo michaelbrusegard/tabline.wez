@@ -51,6 +51,16 @@ local function require_component(window, v)
 	return component
 end
 
+local function create_opts(v)
+	local opts = {}
+	for k, opt in pairs(v) do
+		if k ~= 1 and k ~= "fmt" and k ~= "cond" then
+			opts[k] = opt
+		end
+	end
+	return opts
+end
+
 function M.extract_components(components_opts, attributes, window)
 	local components = {}
 	for _, v in ipairs(components_opts) do
@@ -71,10 +81,13 @@ function M.extract_components(components_opts, attributes, window)
 		elseif type(v) == "table" and type(v[1]) == "string" then
 			local ok, result = pcall(require, require_component(window, v[1]))
 			if ok then
-				if type(v.fmt) == "function" then
-					table.insert(components, { Text = v.fmt(result(window), window) .. "" })
-				else
-					table.insert(components, { Text = result(window) .. "" })
+				if type(v.cond) ~= "function" or v.cond(window) then
+					local opts = create_opts(v)
+					if type(v.fmt) == "function" then
+						table.insert(components, { Text = v.fmt(result(window, opts), window) .. "" })
+					else
+						table.insert(components, { Text = result(window, opts) .. "" })
+					end
 				end
 			end
 		elseif type(v) == "function" then

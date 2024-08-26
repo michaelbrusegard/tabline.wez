@@ -1,5 +1,6 @@
 local wezterm = require("wezterm")
 local config = require("tabline.config")
+local util = require("tabline.util")
 
 local hour_to_icon = {
 	["00"] = "md_clock_time_twelve_outline",
@@ -28,9 +29,14 @@ local hour_to_icon = {
 	["23"] = "md_clock_time_eleven",
 }
 
-return function()
+local default_opts = {
+	style = "%H:%M",
+}
+
+return function(_, opts)
+	opts = util.deep_extend(default_opts, opts or {})
 	local time = wezterm.time.now()
-	local datetime = time:format("%H:%M")
+	local datetime = time:format(opts.style)
 
 	if config.opts.options.icons_enabled then
 		local hour = time:format("%H")
