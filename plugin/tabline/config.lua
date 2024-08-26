@@ -35,7 +35,7 @@ local default_opts = {
 			"/",
 			"cwd",
 		},
-		tab_inactive = { "tab_index", ":", "Space" },
+		tab_inactive = { "tab_index", "Space", "process" },
 		tabline_x = {},
 		tabline_y = { "workspace" },
 		tabline_z = { "hostname" },
