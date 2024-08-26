@@ -8,6 +8,7 @@ M.colors = {}
 
 local default_opts = {
 	options = {
+		icons_enabled = true,
 		theme = "Catppuccin Mocha",
 		component_separators = {
 			left = wezterm.nerdfonts.pl_left_hard_divider,

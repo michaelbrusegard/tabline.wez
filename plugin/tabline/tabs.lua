@@ -33,8 +33,8 @@ local function create_attributes()
 end
 
 local function create_tab_content(tab)
-	tab_active = util.extract_components(opts.sections.tab_active, tab)
-	tab_inactive = util.extract_components(opts.sections.tab_inactive, tab)
+	tab_active = util.extract_components(opts.sections.tab_active, active_attributes, tab)
+	tab_inactive = util.extract_components(opts.sections.tab_inactive, inactive_attributes, tab)
 end
 
 local function tabs(tab)

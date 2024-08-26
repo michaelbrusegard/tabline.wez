@@ -59,12 +59,12 @@ local function insert_section_separators(components, is_left)
 end
 
 local function create_sections(window)
-	tabline_a = insert_section_separators(util.extract_components(opts.sections.tabline_a, window), true)
-	tabline_b = insert_section_separators(util.extract_components(opts.sections.tabline_b, window), true)
-	tabline_c = insert_section_separators(util.extract_components(opts.sections.tabline_c, window), true)
-	tabline_x = insert_section_separators(util.extract_components(opts.sections.tabline_x, window), false)
-	tabline_y = insert_section_separators(util.extract_components(opts.sections.tabline_y, window), false)
-	tabline_z = insert_section_separators(util.extract_components(opts.sections.tabline_z, window), false)
+	tabline_a = insert_section_separators(util.extract_components(opts.sections.tabline_a, attributes_a, window), true)
+	tabline_b = insert_section_separators(util.extract_components(opts.sections.tabline_b, attributes_b, window), true)
+	tabline_c = insert_section_separators(util.extract_components(opts.sections.tabline_c, attributes_c, window), true)
+	tabline_x = insert_section_separators(util.extract_components(opts.sections.tabline_x, attributes_c, window), false)
+	tabline_y = insert_section_separators(util.extract_components(opts.sections.tabline_y, attributes_b, window), false)
+	tabline_z = insert_section_separators(util.extract_components(opts.sections.tabline_z, attributes_a, window), false)
 end
 
 local function right_component()

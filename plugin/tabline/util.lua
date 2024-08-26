@@ -35,6 +35,12 @@ function M.insert_elements(dest, src)
 	end
 end
 
+local reset_attributes = {
+	{ Attribute = { Underline = "None" } },
+	{ Attribute = { Intensity = "Normal" } },
+	{ Attribute = { Italic = false } },
+}
+
 local function require_component(window, v)
 	local component
 	if window.tab_id then
@@ -45,12 +51,13 @@ local function require_component(window, v)
 	return component
 end
 
-function M.extract_components(components_opts, window)
+function M.extract_components(components_opts, attributes, window)
 	local components = {}
 	for _, v in ipairs(components_opts) do
 		if type(v) == "string" then
 			if v == "ResetAttributes" then
-				table.insert(components, v)
+				M.insert_elements(components, reset_attributes)
+				M.insert_elements(components, attributes)
 			elseif v == "Space" then
 				table.insert(components, { Text = " " })
 			else

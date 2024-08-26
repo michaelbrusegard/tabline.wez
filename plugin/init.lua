@@ -36,4 +36,8 @@ function M.setup(opts)
 	require("tabline.update").init()
 end
 
+function M.get_config()
+	return require("tabline.config").opts
+end
+
 return M
