@@ -6,19 +6,8 @@ local M = {}
 M.opts = {}
 M.colors = {}
 
-local function mode_fmt(name)
-	local mode_text = {
-		normal_mode = "WINDOW " .. wezterm.nerdfonts.md_dock_window .. "",
-		search_mode = "FIND " .. wezterm.nerdfonts.oct_search .. "",
-		copy_mode = "YANK " .. wezterm.nerdfonts.md_content_copy .. "",
-	}
-
-	return mode_text[name]
-end
-
 local default_opts = {
 	options = {
-		icons_enabled = true,
 		theme = "Catppuccin Mocha",
 		component_separators = {
 			left = wezterm.nerdfonts.pl_left_hard_divider,
@@ -28,12 +17,25 @@ local default_opts = {
 			left = wezterm.nerdfonts.pl_left_soft_divider,
 			right = wezterm.nerdfonts.pl_right_soft_divider,
 		},
+		tab_separators = {
+			left = wezterm.nerdfonts.pl_left_hard_divider,
+			right = wezterm.nerdfonts.pl_right_hard_divider,
+		},
 		color_overrides = {},
 	},
 	sections = {
-		tabline_a = { { "mode", fmt = mode_fmt } },
+		tabline_a = { "mode" },
 		tabline_b = { "workspace" },
 		tabline_c = {},
+		tab_active = {
+			"tab_index",
+			":",
+			"Space",
+			"parent",
+			"/",
+			"cwd",
+		},
+		tab_inactive = { "tab_index", ":", "Space" },
 		tabline_x = {},
 		tabline_y = { "workspace" },
 		tabline_z = { "hostname" },
@@ -85,6 +87,10 @@ local function get_colors(theme)
 			a = { fg = mantle, bg = green },
 			b = { fg = green, bg = surface0 },
 			c = { fg = text, bg = mantle },
+		},
+		tab = {
+			active = { fg = text, bg = surface0 },
+			inactive = { fg = text, bg = mantle },
 		},
 	}
 end

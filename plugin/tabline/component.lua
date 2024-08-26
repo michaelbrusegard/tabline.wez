@@ -7,6 +7,7 @@ local colors = config.colors
 local M = {}
 
 local reset = "ResetAttributes"
+local space = { Text = " " }
 local left_section_separator = { Text = opts.options.section_separators.left }
 local right_section_separator = { Text = opts.options.section_separators.right }
 local left_component_separator = { Text = opts.options.component_separators.left }
@@ -45,37 +46,6 @@ local function create_attributes(window)
 	}
 end
 
-local function extract_components(components_opts, window)
-	local components = {}
-	for _, v in ipairs(components_opts) do
-		if type(v) == "string" then
-			if v == "ResetAttributes" then
-				table.insert(components, v)
-			end
-			local ok, result = pcall(require, "tabline.components." .. v)
-			if ok then
-				table.insert(components, { Text = " " .. result(window) .. " " })
-			else
-				table.insert(components, { Text = " " .. v .. " " })
-			end
-		elseif type(v) == "table" and type(v[1]) == "string" then
-			local ok, result = pcall(require, "tabline.components." .. v[1])
-			if ok then
-				if type(v.fmt) == "function" then
-					table.insert(components, { Text = " " .. v.fmt(result(window), window) .. " " })
-				else
-					table.insert(components, { Text = " " .. result(window) .. " " })
-				end
-			end
-		elseif type(v) == "function" then
-			table.insert(components, { Text = v(window) })
-		elseif type(v) == "table" then
-			table.insert(components, v)
-		end
-	end
-	return components
-end
-
 local function insert_section_separators(components, is_left)
 	local i = 1
 	while i <= #components do
@@ -89,19 +59,21 @@ local function insert_section_separators(components, is_left)
 end
 
 local function create_sections(window)
-	tabline_a = insert_section_separators(extract_components(opts.sections.tabline_a, window), true)
-	tabline_b = insert_section_separators(extract_components(opts.sections.tabline_b, window), true)
-	tabline_c = insert_section_separators(extract_components(opts.sections.tabline_c, window), true)
-	tabline_x = insert_section_separators(extract_components(opts.sections.tabline_x, window), false)
-	tabline_y = insert_section_separators(extract_components(opts.sections.tabline_y, window), false)
-	tabline_z = insert_section_separators(extract_components(opts.sections.tabline_z, window), false)
+	tabline_a = insert_section_separators(util.extract_components(opts.sections.tabline_a, window), true)
+	tabline_b = insert_section_separators(util.extract_components(opts.sections.tabline_b, window), true)
+	tabline_c = insert_section_separators(util.extract_components(opts.sections.tabline_c, window), true)
+	tabline_x = insert_section_separators(util.extract_components(opts.sections.tabline_x, window), false)
+	tabline_y = insert_section_separators(util.extract_components(opts.sections.tabline_y, window), false)
+	tabline_z = insert_section_separators(util.extract_components(opts.sections.tabline_z, window), false)
 end
 
 local function right_component()
 	local result = {}
 	if #tabline_x > 0 then
 		util.insert_elements(result, attributes_c)
+		table.insert(result, space)
 		util.insert_elements(result, tabline_x)
+		table.insert(result, space)
 		table.insert(result, reset)
 	end
 	if #tabline_y > 0 then
@@ -111,7 +83,9 @@ local function right_component()
 	end
 	if #tabline_y > 0 then
 		util.insert_elements(result, attributes_b)
+		table.insert(result, space)
 		util.insert_elements(result, tabline_y)
+		table.insert(result, space)
 		table.insert(result, reset)
 	end
 	if #tabline_z > 0 and #tabline_y > 0 then
@@ -125,7 +99,9 @@ local function right_component()
 	end
 	if #tabline_z > 0 then
 		util.insert_elements(result, attributes_a)
+		table.insert(result, space)
 		util.insert_elements(result, tabline_z)
+		table.insert(result, space)
 		table.insert(result, reset)
 	end
 	return result
@@ -135,7 +111,9 @@ local function left_component()
 	local result = {}
 	if #tabline_a > 0 then
 		util.insert_elements(result, attributes_a)
+		table.insert(result, space)
 		util.insert_elements(result, tabline_a)
+		table.insert(result, space)
 		table.insert(result, reset)
 	end
 	if #tabline_a > 0 and #tabline_b > 0 then
@@ -149,7 +127,9 @@ local function left_component()
 	end
 	if #tabline_b > 0 then
 		util.insert_elements(result, attributes_b)
+		table.insert(result, space)
 		util.insert_elements(result, tabline_b)
+		table.insert(result, space)
 		table.insert(result, reset)
 	end
 	if #tabline_b > 0 then
@@ -159,7 +139,9 @@ local function left_component()
 	end
 	if #tabline_c > 0 then
 		util.insert_elements(result, attributes_c)
+		table.insert(result, space)
 		util.insert_elements(result, tabline_c)
+		table.insert(result, space)
 		table.insert(result, reset)
 	end
 	return result
