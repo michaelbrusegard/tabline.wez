@@ -36,7 +36,7 @@ You'll also need to have a patched font if you want icons.
 
 ## Usage and customization
 
-Tabline has sections as shown below just like lualine with the addition of the `tabs` section.
+Tabline has sections as shown below just like lualine with the addition of `tabs` in the middle.
 
 ```text
 +-------------------------------------------------+
@@ -54,7 +54,7 @@ Each sections holds its components e.g. Current active keytable (mode).
 tabline.setup({
   options = {
     icons_enabled = true,
-    theme = "Catppuccin Mocha",
+    theme = 'Catppuccin Mocha',
     color_overrides = {},
     component_separators = {
       left = wezterm.nerdfonts.pl_left_hard_divider,
@@ -70,20 +70,20 @@ tabline.setup({
     },
   },
   sections = {
-    tabline_a = { "mode" },
-    tabline_b = { "workspace" },
+    tabline_a = { 'mode' },
+    tabline_b = { 'workspace' },
     tabline_c = {},
     tab_active = {
-      "tab_index",
-      "Space",
-      "parent",
-      "/",
-      "cwd",
+      'tab_index',
+      ' ',
+      'parent',
+      '/',
+      'cwd',
     },
-    tab_inactive = { "tab_index", "Space", "process" },
-    tabline_x = { "ram", "cpu" },
-    tabline_y = { "datetime", "battery" },
-    tabline_z = { "hostname" },
+    tab_inactive = { 'tab_index', ' ', 'process' },
+    tabline_x = { 'ram', 'cpu' },
+    tabline_y = { 'datetime', 'battery' },
+    tabline_z = { 'hostname' },
   },
   extensions = {},
 })
@@ -120,7 +120,7 @@ tabline.setup()
 ### Setting a theme
 
 ```lua
-options = { theme = "GruvboxDark" }
+options = { theme = 'GruvboxDark' }
 ```
 
 All available themes are found [here](https://wezfurlong.org/wezterm/colorschemes/index.html).
@@ -212,18 +212,9 @@ to the right-most sections (x, y, z). For the tabs it refers to each side of the
 
 ```lua
 options = {
-  component_separators = {
-    left = "",
-    right = "",
-  },
-  section_separators = {
-    left = "",
-    right = "",
-  },
-  tab_separators = {
-    left = "",
-    right = "",
-  },
+  component_separators = '',
+  section_separators = '',
+  tab_separators = '',
 }
 ```
 
@@ -232,7 +223,7 @@ options = {
 ### Changing components in tabline sections
 
 ```lua
-sections = { tabline_a = { "mode" } }
+sections = { tabline_a = { 'mode' } }
 ```
 
 #### Available components
@@ -261,21 +252,23 @@ And the `tab_active` and `tab_inactive` components which are grouped under Tab a
 
 ```lua
 local function hello()
-  return [[hello world]]
+  return 'Hello World'
 end
 sections = { tabline_a = { hello } }
 ```
 
 > [!NOTE]
-> Functions receive the `Window` object or `TabInformation` object as the first argument depending on the component group.
+> Functions receive the `Window` object or `TabInformation` object as the first argument depending on the component group. The second argument is always an opts table with the provided options
 
 ##### Text string as tabline component
 
 ```lua
-sections = { tabline_a = { "Hello World" } }
+sections = { tabline_a = { 'Hello World' } }
 ```
 
 ##### WezTerm Formatitem as tabline component
+
+You can find all the available format items [here](https://wezfurlong.org/wezterm/config/lua/wezterm/format.html). The `ResetAttributes` format item has been overwritten to reset all attributes back to the default for that component instead of the WezTerm default.
 
 ```lua
 sections = {
@@ -283,13 +276,14 @@ sections = {
     { Attribute = { Underline = 'Single' } },
     { Foreground = { AnsiColor = 'Fuchsia' } },
     { Background = { Color = 'blue' } },
-    "Hello World", -- { Text = 'Hello World' }
+    'Hello World', -- { Text = 'Hello World' }
   }
 }
 
+```
+
 > [!TIP]
 > Strings are automatically wrapped in a Text FormatItem when used as a component.
-```
 
 ##### Lua expressions as tabline component
 
@@ -307,6 +301,67 @@ sections = { lualine_c = { os.date('%a'), data, require('util').status() } }
 
 ---
 
+### Component options
+
+Component options can change the way a component behave.
+There are two kinds of options:
+
+- global options affecting all components
+- local options affecting specific
+
+Global options can be used as local options (can be applied to specific components)
+but you cannot use local options as global.
+Global options used locally overwrites the global, for example:
+
+```lua
+require('lualine').setup {
+  options = { fmt = string.lower },
+  sections = {
+    lualine_a = {
+      { 'mode', fmt = function(str) return str:sub(1,1) end }
+    },
+    lualine_b = { 'window' }
+  }
+}
+```
+
+`mode` will be formatted with the passed function so only first char will be
+shown. On the other hand `branch` will be formatted with the global formatter
+`string.lower` so it will be showed in lower case.
+
+#### Available options
+
+#### Global options
+
+These are `options` that are used in the options table.
+They set behavior of tabline.
+
+Values set here are treated as default for other options
+that work in the component level.
+
+For example even though `icons_enabled` is a general component option.
+You can set `icons_enabled` to `false` and icons will be disabled on all
+component. You can still overwrite defaults set in the options table by specifying
+the option value in the component.
+
+```lua
+options = {
+  theme = 'nord', -- tabline theme
+  component_separators = {
+    left = wezterm.nerdfonts.ple_right_half_circle_thick,
+    right = wezterm.nerdfonts.ple_left_half_circle_thick,
+  },
+  section_separators = {
+    left = wezterm.nerdfonts.ple_right_half_circle_thin,
+    right = wezterm.nerdfonts.ple_left_half_circle_thin,
+  },
+  tab_separators = {
+    left = wezterm.nerdfonts.ple_right_half_circle_thick,
+    right = wezterm.nerdfonts.ple_left_half_circle_thick,
+  },
+}
+```
+
 #### General component options
 
 These are options that control behavior at the component level
@@ -316,7 +371,8 @@ and are available for all components.
 sections = {
   lualine_a = {
     {
-      "mode",
+      'mode',
+      icons_enabled = true, -- Enables the display of icons alongside the component.
       cond = nil, -- Condition function, the component is loaded when the function returns `true`.
 
       fmt = nil, -- Format function, formats the component's output.
@@ -342,9 +398,9 @@ specify if it should be zero indexed.
 sections = {
   tabline_a = {
     {
-      "datetime",
-      -- options: your own format string ("%Y/%m/%d %H:%M:%S", etc.)
-      style = "%H:%M",
+      'datetime',
+      -- options: your own format string ('%Y/%m/%d %H:%M:%S', etc.)
+      style = '%H:%M',
     },
   },
 }
@@ -356,7 +412,7 @@ sections = {
 sections = {
   tab_active = {
     {
-      "cwd",
+      'cwd',
       max_length = 16, -- Max length before it is truncated
     },
   },
@@ -369,7 +425,7 @@ sections = {
 sections = {
   tab_active = {
     {
-      "tab_index",
+      'tab_index',
       zero_indexed = false, -- Does the tab index start at 0 or 1
     },
   },
@@ -417,33 +473,16 @@ tabline.setup({ extensions = { my_extension } })
 
 By default tabline refreshes itself based on the [`status_update_interval`](https://wezfurlong.org/wezterm/config/lua/config/status_update_interval.html). However you can also force
 tabline to refresh at any time by calling `tabline.refresh` function.
+The refresh function needs the Window object to refresh the tabline, and the TabInformation object to refresh the tabs. If passing one of them as nil it won't refresh the respective section.
 
 ```lua
-tabline.refresh()
+tabline.refresh(window, tab)
 ```
 
 Avoid calling `tabline.refresh` inside components. Since components are evaluated
 during refresh, calling refresh while refreshing can have undesirable effects.
 
-### Disabling tabline
-
-You can also disable tabline completely.
-Note that you need to call this after the setup
-
-```lua
-tabline.hide()
-```
-
-To enable it again you can do
-
-```lua
-tabline.hide({ unhide = true })
-```
-
 ### Contributors
 
-Thanks to these wonderful people, we enjoy this awesome plugin.
-
-<a href="https://github.com/nvim-lualine/lualine.nvim/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=nvim-lualine/lualine.nvim" />
-</a>
+Thanks to [MLFlexer](https://github.com/MLFlexer) for some tips in developing a plugin for WezTerm.
+Thanks to [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) for the inspiration and a nice statusline for my Neovim.
