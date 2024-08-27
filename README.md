@@ -272,7 +272,7 @@ You can find all the available format items [here](https://wezfurlong.org/wezter
 
 ```lua
 sections = {
-  lualine_c = {
+  tabline_c = {
     { Attribute = { Underline = 'Single' } },
     { Foreground = { AnsiColor = 'Fuchsia' } },
     { Background = { Color = 'blue' } },
@@ -294,7 +294,7 @@ You can use any valid lua expression as a component including:
 - require statements
 
 ```lua
-sections = { lualine_c = { os.date('%a'), data, require('util').status() } }
+sections = { tabline_c = { os.date('%a'), data, require('util').status() } }
 ```
 
 `data` is a global variable in this example.
@@ -314,13 +314,13 @@ but you cannot use local options as global.
 Global options used locally overwrites the global, for example:
 
 ```lua
-require('lualine').setup {
+tabline.setup {
   options = { fmt = string.lower },
   sections = {
-    lualine_a = {
+    tabline_a = {
       { 'mode', fmt = function(str) return str:sub(1,1) end }
     },
-    lualine_b = { 'window' }
+    tabline_b = { 'window' }
   }
 }
 ```
@@ -369,7 +369,7 @@ and are available for all components.
 
 ```lua
 sections = {
-  lualine_a = {
+  tabline_a = {
     {
       'mode',
       icons_enabled = true, -- Enables the display of icons alongside the component.
@@ -456,7 +456,7 @@ You can define your own extensions. If you believe an extension may be useful to
 ```lua
 local my_extension = {
   sections = {
-    lualine_a = { "mode" }
+    tabline_a = { "mode" }
   },
   events = {
     start = "my_plugin.start",
