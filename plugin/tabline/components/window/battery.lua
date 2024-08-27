@@ -1,7 +1,6 @@
 local wezterm = require("wezterm")
-local config = require("tabline.config")
 
-return function()
+return function(_, opts)
 	local bat = ""
 	local bat_icon = ""
 	for _, b in ipairs(wezterm.battery_info()) do
@@ -19,7 +18,7 @@ return function()
 			bat_icon = wezterm.nerdfonts.fa_battery_full
 		end
 	end
-	if config.opts.options.icons_enabled then
+	if opts.icons_enabled then
 		bat = bat_icon .. " " .. bat
 	end
 	return bat

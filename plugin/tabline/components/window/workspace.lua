@@ -1,11 +1,10 @@
-local wezterm = require("wezterm")
-local config = require("tabline.config")
+local wezterm = require('wezterm')
 
-return function()
-	local workspace = wezterm.mux.get_active_workspace()
-	workspace = string.match(workspace, "[^/\\]+$")
-	if config.opts.options.icons_enabled then
-		workspace = wezterm.nerdfonts.md_monitor_multiple .. " " .. workspace
-	end
-	return workspace
+return function(_, opts)
+  local workspace = wezterm.mux.get_active_workspace()
+  workspace = string.match(workspace, '[^/\\]+$')
+  if opts.icons_enabled then
+    workspace = wezterm.nerdfonts.md_monitor_multiple .. ' ' .. workspace
+  end
+  return workspace
 end

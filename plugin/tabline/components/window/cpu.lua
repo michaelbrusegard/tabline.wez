@@ -1,7 +1,6 @@
 local wezterm = require("wezterm")
-local config = require("tabline.config")
 
-return function()
+return function(_, opts)
 	local os_name = os.getenv("OS")
 	local handle
 	if os_name == "Windows_NT" then
@@ -28,13 +27,17 @@ return function()
 		if handle_cores then
 			local num_cores = handle_cores:read("*a")
 			handle_cores:close()
-			cpu = tonumber(cpu) / tonumber(num_cores)
+			num_cores = tonumber(num_cores)
+			local cpu_num = tonumber(cpu)
+			if num_cores and cpu_num then
+				cpu = cpu_num / num_cores
+			end
 		end
 	end
 
 	cpu = string.format("%.2f%%", cpu)
 
-	if config.opts.options.icons_enabled then
+	if opts.icons_enabled then
 		cpu = wezterm.nerdfonts.oct_cpu .. " " .. cpu
 	end
 

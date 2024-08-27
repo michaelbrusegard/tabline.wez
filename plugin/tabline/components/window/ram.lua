@@ -1,7 +1,6 @@
 local wezterm = require("wezterm")
-local config = require("tabline.config")
 
-return function()
+return function(_, opts)
 	local os_name = os.getenv("OS")
 	local handle
 	if os_name == "Windows_NT" then
@@ -39,7 +38,7 @@ return function()
 		ram = string.format("%.2f GB", total_memory)
 	end
 
-	if config.opts.options.icons_enabled then
+	if opts.icons_enabled then
 		ram = wezterm.nerdfonts.cod_server .. " " .. ram
 	end
 
