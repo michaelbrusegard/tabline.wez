@@ -66,7 +66,7 @@ function M.apply_to_config(config)
 end
 
 function M.get_config()
-  return require('tabline.config').active_opts
+  return require('tabline.config').opts
 end
 
 function M.refresh(window, tab)

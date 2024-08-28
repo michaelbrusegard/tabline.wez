@@ -4,7 +4,7 @@ local util = require('tabline.util')
 local M = {}
 
 M.opts = {}
-M.active_opts = {}
+M.sections = {}
 M.component_opts = {}
 M.colors = {}
 
@@ -124,7 +124,7 @@ function M.set(user_opts)
 
   M.component_opts = set_component_opts(user_opts)
   M.opts = util.deep_extend(default_opts, user_opts)
-  M.active_opts = M.opts
+  M.sections = util.deep_copy(M.opts.sections)
   M.colors = util.deep_extend(get_colors(M.opts.options.theme), color_overrides)
 end
 

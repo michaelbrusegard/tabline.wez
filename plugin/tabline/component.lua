@@ -1,7 +1,8 @@
 local wezterm = require('wezterm')
 local util = require('tabline.util')
 local config = require('tabline.config')
-local opts = config.active_opts
+local opts = config.opts
+local sections = opts.sections
 local colors = config.colors
 
 local M = {}
@@ -62,12 +63,12 @@ local function insert_section_separators(components, is_left)
 end
 
 local function create_sections(window)
-  tabline_a = insert_section_separators(util.extract_components(opts.sections.tabline_a, attributes_a, window), true)
-  tabline_b = insert_section_separators(util.extract_components(opts.sections.tabline_b, attributes_b, window), true)
-  tabline_c = insert_section_separators(util.extract_components(opts.sections.tabline_c, attributes_c, window), true)
-  tabline_x = insert_section_separators(util.extract_components(opts.sections.tabline_x, attributes_c, window), false)
-  tabline_y = insert_section_separators(util.extract_components(opts.sections.tabline_y, attributes_b, window), false)
-  tabline_z = insert_section_separators(util.extract_components(opts.sections.tabline_z, attributes_a, window), false)
+  tabline_a = insert_section_separators(util.extract_components(sections.tabline_a, attributes_a, window), true)
+  tabline_b = insert_section_separators(util.extract_components(sections.tabline_b, attributes_b, window), true)
+  tabline_c = insert_section_separators(util.extract_components(sections.tabline_c, attributes_c, window), true)
+  tabline_x = insert_section_separators(util.extract_components(sections.tabline_x, attributes_c, window), false)
+  tabline_y = insert_section_separators(util.extract_components(sections.tabline_y, attributes_b, window), false)
+  tabline_z = insert_section_separators(util.extract_components(sections.tabline_z, attributes_a, window), false)
 end
 
 local function right_component()

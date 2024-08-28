@@ -1,6 +1,7 @@
 local config = require('tabline.config')
 local util = require('tabline.util')
-local opts = config.active_opts
+local opts = config.opts
+local sections = opts.sections
 local colors = config.colors
 
 local M = {}
@@ -33,8 +34,8 @@ local function create_attributes()
 end
 
 local function create_tab_content(tab)
-  tab_active = util.extract_components(opts.sections.tab_active, active_attributes, tab)
-  tab_inactive = util.extract_components(opts.sections.tab_inactive, inactive_attributes, tab)
+  tab_active = util.extract_components(sections.tab_active, active_attributes, tab)
+  tab_inactive = util.extract_components(sections.tab_inactive, inactive_attributes, tab)
 end
 
 local function tabs(tab)
