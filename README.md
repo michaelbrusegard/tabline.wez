@@ -15,11 +15,11 @@ Feel free to create an issue/PR if you want to see anything else implemented, or
 Here is a preview of what the tab-bar can look like.
 
 <p>
-<img width='700' />
-<img width='700' />
-<img width='700' />
-<img width='700' />
-<img width='700' />
+  <img width="1656" alt="tabline 1" src="https://github.com/user-attachments/assets/bc3a2dc3-fa95-4386-a2b2-6b593dc4cef8">
+  <img width="1656" alt="tabline 2" src="https://github.com/user-attachments/assets/6c72b8b0-7751-4972-950e-ee1e3de1a39b">
+  <img width="1656" alt="tabline 3" src="https://github.com/user-attachments/assets/cd61edca-8c50-477b-a14a-84a89d369600">
+  <img width="1656" alt="tabline 4" src="https://github.com/user-attachments/assets/38b194ec-33d9-4955-af08-c70c25b3bcf0">
+  <img width="1656" alt="tabline 5" src="https://github.com/user-attachments/assets/ff216ab2-8a60-494d-9b11-9295212143df">
 </p>
 
 `tabline.wez` supports all the same themes as WezTerm. You can find the list of themes [here](https://wezfurlong.org/wezterm/colorschemes/index.html).
