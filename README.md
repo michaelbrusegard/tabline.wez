@@ -178,6 +178,17 @@ tabline.setup({
 })
 ```
 
+#### Getting colors
+
+If you want to get the colors used in the current theme, you can do so with:
+
+```lua
+tabline.get_colors()
+```
+
+> [!TIP]
+> This can be useful when creatting your own components or extensions and you want to use the same colors as the current theme
+
 ---
 
 ### Separators
@@ -326,7 +337,7 @@ tabline.setup {
 ```
 
 `mode` will be formatted with the passed function so only first char will be
-shown. On the other hand `branch` will be formatted with the global formatter
+shown. On the other hand `window` will be formatted with the global formatter
 `string.lower` so it will be showed in lower case.
 
 #### Available options
@@ -442,7 +453,7 @@ By default no extensions are loaded to improve performance.
 You can load extensions with:
 
 ```lua
-extensions = { "resurrect" }
+extensions = { 'resurrect' }
 ```
 
 #### Available extensions
@@ -451,17 +462,21 @@ extensions = { "resurrect" }
 
 #### Custom extensions
 
-You can define your own extensions. If you believe an extension may be useful to others, then please submit a PR. Custom extensions requires a start and stop event to be defined.
+You can define your own extensions. If you believe an extension may be useful to others, then please submit a PR.
+Custom extensions requires a start event to be defined. You can also define a stop event and a delay.
+If the stop event is defined the delay will be how long it waits to stop the extension after the stop event is triggered.
+If the stop event is not defined it will stop the extension after the delay. Delay is by default 5 seconds if the stop event is not defined.
 If a section is not defined, it will use the default from the config.
 
 ```lua
 local my_extension = {
+    events = {
+        start = 'my_plugin.start',
+        stop = 'my_plugin.stop',
+        delay = 3
+    },
   sections = {
-    tabline_a = { "mode" }
-  },
-  events = {
-    start = "my_plugin.start",
-    stop = "my_plugin.stop",
+    tabline_a = { 'mode' }
   }
 }
 
@@ -487,3 +502,7 @@ during refresh, calling refresh while refreshing can have undesirable effects.
 
 Thanks to [MLFlexer](https://github.com/MLFlexer) for some tips in developing a plugin for WezTerm.
 Thanks to [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) for the inspiration and a nice statusline for my Neovim.
+
+```
+
+```

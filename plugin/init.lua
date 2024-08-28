@@ -67,6 +67,10 @@ function M.get_config()
   return require('tabline.config').opts
 end
 
+function M.get_colors()
+  return require('tabline.config').colors
+end
+
 function M.refresh(window, tab)
   if window then
     require('tabline.component').set_status(window)

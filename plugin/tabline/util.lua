@@ -67,7 +67,7 @@ local function require_component(window, v)
 end
 
 function M.extract_components(components_opts, attributes, window)
-  local opts = require('tabline.config').component_opts
+  local component_opts = require('tabline.config').component_opts
   local components = {}
   for _, v in ipairs(components_opts) do
     if type(v) == 'string' then
@@ -77,7 +77,7 @@ function M.extract_components(components_opts, attributes, window)
       else
         local ok, result = pcall(require, require_component(window, v))
         if ok then
-          table.insert(components, { Text = result(window, opts) .. '' })
+          table.insert(components, { Text = component_opts.fmt(result(window, component_opts), window) .. '' })
         else
           table.insert(components, { Text = v .. '' })
         end
@@ -85,14 +85,10 @@ function M.extract_components(components_opts, attributes, window)
     elseif type(v) == 'table' and type(v[1]) == 'string' then
       local ok, result = pcall(require, require_component(window, v[1]))
       if ok then
-        if type(v.cond) ~= 'function' or v.cond(window) then
-          opts = M.deep_extend(opts, v)
-          table.remove(opts, 1)
-          if type(v.fmt) == 'function' then
-            table.insert(components, { Text = v.fmt(result(window, opts), window) .. '' })
-          else
-            table.insert(components, { Text = result(window, opts) .. '' })
-          end
+        local opts = M.deep_extend(M.deep_copy(component_opts), v)
+        table.remove(opts, 1)
+        if type(opts.cond) ~= 'function' or opts.cond(window) then
+          table.insert(components, { Text = opts.fmt(result(window, opts), window) .. '' })
         end
       end
     elseif type(v) == 'function' then
