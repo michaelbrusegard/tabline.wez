@@ -56,11 +56,11 @@ tabline.setup({
     icons_enabled = true,
     theme = 'Catppuccin Mocha',
     color_overrides = {},
-    component_separators = {
+    section_separators = {
       left = wezterm.nerdfonts.pl_left_hard_divider,
       right = wezterm.nerdfonts.pl_right_hard_divider,
     },
-    section_separators = {
+    component_separators = {
       left = wezterm.nerdfonts.pl_left_soft_divider,
       right = wezterm.nerdfonts.pl_right_soft_divider,
     },
@@ -201,11 +201,11 @@ tabline defines three kinds of separators:
 
 ```lua
 options = {
-  component_separators = {
+  section_separators = {
     left = wezterm.nerdfonts.pl_left_hard_divider,
     right = wezterm.nerdfonts.pl_right_hard_divider,
   },
-  section_separators = {
+  component_separators = {
     left = wezterm.nerdfonts.pl_left_soft_divider,
     right = wezterm.nerdfonts.pl_right_soft_divider,
   },
@@ -223,8 +223,8 @@ to the right-most sections (x, y, z). For the tabs it refers to each side of the
 
 ```lua
 options = {
-  component_separators = '',
   section_separators = '',
+  component_separators = '',
   tab_separators = '',
 }
 ```
@@ -358,11 +358,11 @@ the option value in the component.
 ```lua
 options = {
   theme = 'nord', -- tabline theme
-  component_separators = {
+  section_separators = {
     left = wezterm.nerdfonts.ple_right_half_circle_thick,
     right = wezterm.nerdfonts.ple_left_half_circle_thick,
   },
-  section_separators = {
+  component_separators = {
     left = wezterm.nerdfonts.ple_right_half_circle_thin,
     right = wezterm.nerdfonts.ple_left_half_circle_thin,
   },
@@ -501,6 +501,7 @@ during refresh, calling refresh while refreshing can have undesirable effects.
 ### Contributors
 
 Thanks to [MLFlexer](https://github.com/MLFlexer) for some tips in developing a plugin for WezTerm.
+
 Thanks to [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) for the inspiration and a nice statusline for my Neovim.
 
 ```

@@ -12,11 +12,11 @@ M.scheme = {}
 local default_opts = {
   options = {
     theme = 'Catppuccin Mocha',
-    component_separators = {
+    section_separators = {
       left = wezterm.nerdfonts.pl_left_hard_divider,
       right = wezterm.nerdfonts.pl_right_hard_divider,
     },
-    section_separators = {
+    component_separators = {
       left = wezterm.nerdfonts.pl_left_soft_divider,
       right = wezterm.nerdfonts.pl_right_soft_divider,
     },

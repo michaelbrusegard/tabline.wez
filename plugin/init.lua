@@ -61,6 +61,7 @@ function M.apply_to_config(config)
       background = require('tabline.config').colors.normal_mode.c.bg,
     },
   }
+  config.status_update_interval = 200
 end
 
 function M.get_config()

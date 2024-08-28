@@ -16,7 +16,7 @@ local right_component_separator =
   { Text = config.opts.options.component_separators.right or config.opts.options.component_separators }
 
 local attributes_a, attributes_b, attributes_c = {}, {}, {}
-local component_seperator_attributes_a, component_seperator_attributes_b, component_seperator_attributes_c = {}, {}, {}
+local section_seperator_attributes_a, section_seperator_attributes_b, section_seperator_attributes_c = {}, {}, {}
 local tabline_a, tabline_b, tabline_c, tabline_x, tabline_y, tabline_z = {}, {}, {}, {}, {}, {}
 
 local function create_attributes(window)
@@ -34,15 +34,15 @@ local function create_attributes(window)
     { Foreground = { Color = config.colors[mode].c.fg } },
     { Background = { Color = config.colors[mode].c.bg } },
   }
-  component_seperator_attributes_a = {
+  section_seperator_attributes_a = {
     { Foreground = { Color = config.colors[mode].a.bg } },
     { Background = { Color = config.colors[mode].b.bg } },
   }
-  component_seperator_attributes_b = {
+  section_seperator_attributes_b = {
     { Foreground = { Color = config.colors[mode].b.bg } },
     { Background = { Color = config.colors[mode].c.bg } },
   }
-  component_seperator_attributes_c = {
+  section_seperator_attributes_c = {
     { Foreground = { Color = config.colors[mode].a.bg } },
     { Background = { Color = config.colors[mode].c.bg } },
   }
@@ -53,7 +53,7 @@ local function insert_section_separators(components, is_left)
   while i <= #components do
     if type(components[i]) == 'table' and components[i].Text and i < #components then
       table.insert(components, i + 1, space)
-      table.insert(components, i + 1, is_left and left_section_separator or right_section_separator)
+      table.insert(components, i + 1, is_left and left_component_separator or right_component_separator)
       table.insert(components, i + 1, space)
       i = i + 3
     end
@@ -81,8 +81,8 @@ local function right_component()
     table.insert(result, reset)
   end
   if #tabline_y > 0 then
-    util.insert_elements(result, component_seperator_attributes_b)
-    table.insert(result, right_component_separator)
+    util.insert_elements(result, section_seperator_attributes_b)
+    table.insert(result, right_section_separator)
     table.insert(result, reset)
   end
   if #tabline_y > 0 then
@@ -93,12 +93,12 @@ local function right_component()
     table.insert(result, reset)
   end
   if #tabline_z > 0 and #tabline_y > 0 then
-    util.insert_elements(result, component_seperator_attributes_a)
-    table.insert(result, right_component_separator)
+    util.insert_elements(result, section_seperator_attributes_a)
+    table.insert(result, right_section_separator)
     table.insert(result, reset)
   elseif #tabline_z > 0 and #tabline_x > 0 then
-    util.insert_elements(result, component_seperator_attributes_c)
-    table.insert(result, right_component_separator)
+    util.insert_elements(result, section_seperator_attributes_c)
+    table.insert(result, right_section_separator)
     table.insert(result, reset)
   end
   if #tabline_z > 0 then
@@ -121,12 +121,12 @@ local function left_component()
     table.insert(result, reset)
   end
   if #tabline_a > 0 and #tabline_b > 0 then
-    util.insert_elements(result, component_seperator_attributes_a)
-    table.insert(result, left_component_separator)
+    util.insert_elements(result, section_seperator_attributes_a)
+    table.insert(result, left_section_separator)
     table.insert(result, reset)
   elseif #tabline_a > 0 and #tabline_c > 0 then
-    util.insert_elements(result, component_seperator_attributes_c)
-    table.insert(result, left_component_separator)
+    util.insert_elements(result, section_seperator_attributes_c)
+    table.insert(result, left_section_separator)
     table.insert(result, reset)
   end
   if #tabline_b > 0 then
@@ -137,8 +137,8 @@ local function left_component()
     table.insert(result, reset)
   end
   if #tabline_b > 0 then
-    util.insert_elements(result, component_seperator_attributes_b)
-    table.insert(result, left_component_separator)
+    util.insert_elements(result, section_seperator_attributes_b)
+    table.insert(result, left_section_separator)
     table.insert(result, reset)
   end
   if #tabline_c > 0 then
