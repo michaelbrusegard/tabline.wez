@@ -443,6 +443,19 @@ sections = {
 }
 ```
 
+#### cpu and ram component options
+
+```lua
+sections = {
+  tab_active = {
+    {
+      'cpu',
+      throttle = 3, -- How often in seconds the component updates, set to 0 to disable throttling
+    },
+  },
+}
+```
+
 ---
 
 ### Extensions
