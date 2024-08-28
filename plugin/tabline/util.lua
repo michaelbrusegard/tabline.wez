@@ -29,21 +29,6 @@ function M.deep_extend(t1, t2)
   return t1
 end
 
-function M.deep_copy(orig)
-  local orig_type = type(orig)
-  local copy
-  if orig_type == 'table' then
-    copy = {}
-    for orig_key, orig_value in next, orig, nil do
-      copy[M.deep_copy(orig_key)] = M.deep_copy(orig_value)
-    end
-    setmetatable(copy, M.deep_copy(getmetatable(orig)))
-  else
-    copy = orig
-  end
-  return copy
-end
-
 function M.insert_elements(dest, src)
   for _, v in ipairs(src) do
     table.insert(dest, v)

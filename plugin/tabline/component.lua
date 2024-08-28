@@ -1,19 +1,19 @@
 local wezterm = require('wezterm')
 local util = require('tabline.util')
 local config = require('tabline.config')
-local opts = config.opts
-local sections = opts.sections
-local colors = config.colors
 
 local M = {}
 
 local reset = 'ResetAttributes'
 local space = { Text = ' ' }
-local left_section_separator = { Text = opts.options.section_separators.left or opts.options.section_separators }
-local right_section_separator = { Text = opts.options.section_separators.right or opts.options.section_separators }
-local left_component_separator = { Text = opts.options.component_separators.left or opts.options.component_separators }
+local left_section_separator =
+  { Text = config.opts.options.section_separators.left or config.opts.options.section_separators }
+local right_section_separator =
+  { Text = config.opts.options.section_separators.right or config.opts.options.section_separators }
+local left_component_separator =
+  { Text = config.opts.options.component_separators.left or config.opts.options.component_separators }
 local right_component_separator =
-  { Text = opts.options.component_separators.right or opts.options.component_separators }
+  { Text = config.opts.options.component_separators.right or config.opts.options.component_separators }
 
 local attributes_a, attributes_b, attributes_c = {}, {}, {}
 local component_seperator_attributes_a, component_seperator_attributes_b, component_seperator_attributes_c = {}, {}, {}
@@ -22,29 +22,29 @@ local tabline_a, tabline_b, tabline_c, tabline_x, tabline_y, tabline_z = {}, {},
 local function create_attributes(window)
   local mode = window:active_key_table() or 'normal_mode'
   attributes_a = {
-    { Foreground = { Color = colors[mode].a.fg } },
-    { Background = { Color = colors[mode].a.bg } },
+    { Foreground = { Color = config.colors[mode].a.fg } },
+    { Background = { Color = config.colors[mode].a.bg } },
     { Attribute = { Intensity = 'Bold' } },
   }
   attributes_b = {
-    { Foreground = { Color = colors[mode].b.fg } },
-    { Background = { Color = colors[mode].b.bg } },
+    { Foreground = { Color = config.colors[mode].b.fg } },
+    { Background = { Color = config.colors[mode].b.bg } },
   }
   attributes_c = {
-    { Foreground = { Color = colors[mode].c.fg } },
-    { Background = { Color = colors[mode].c.bg } },
+    { Foreground = { Color = config.colors[mode].c.fg } },
+    { Background = { Color = config.colors[mode].c.bg } },
   }
   component_seperator_attributes_a = {
-    { Foreground = { Color = colors[mode].a.bg } },
-    { Background = { Color = colors[mode].b.bg } },
+    { Foreground = { Color = config.colors[mode].a.bg } },
+    { Background = { Color = config.colors[mode].b.bg } },
   }
   component_seperator_attributes_b = {
-    { Foreground = { Color = colors[mode].b.bg } },
-    { Background = { Color = colors[mode].c.bg } },
+    { Foreground = { Color = config.colors[mode].b.bg } },
+    { Background = { Color = config.colors[mode].c.bg } },
   }
   component_seperator_attributes_c = {
-    { Foreground = { Color = colors[mode].a.bg } },
-    { Background = { Color = colors[mode].c.bg } },
+    { Foreground = { Color = config.colors[mode].a.bg } },
+    { Background = { Color = config.colors[mode].c.bg } },
   }
 end
 
@@ -63,12 +63,12 @@ local function insert_section_separators(components, is_left)
 end
 
 local function create_sections(window)
-  tabline_a = insert_section_separators(util.extract_components(sections.tabline_a, attributes_a, window), true)
-  tabline_b = insert_section_separators(util.extract_components(sections.tabline_b, attributes_b, window), true)
-  tabline_c = insert_section_separators(util.extract_components(sections.tabline_c, attributes_c, window), true)
-  tabline_x = insert_section_separators(util.extract_components(sections.tabline_x, attributes_c, window), false)
-  tabline_y = insert_section_separators(util.extract_components(sections.tabline_y, attributes_b, window), false)
-  tabline_z = insert_section_separators(util.extract_components(sections.tabline_z, attributes_a, window), false)
+  tabline_a = insert_section_separators(util.extract_components(config.sections.tabline_a, attributes_a, window), true)
+  tabline_b = insert_section_separators(util.extract_components(config.sections.tabline_b, attributes_b, window), true)
+  tabline_c = insert_section_separators(util.extract_components(config.sections.tabline_c, attributes_c, window), true)
+  tabline_x = insert_section_separators(util.extract_components(config.sections.tabline_x, attributes_c, window), false)
+  tabline_y = insert_section_separators(util.extract_components(config.sections.tabline_y, attributes_b, window), false)
+  tabline_z = insert_section_separators(util.extract_components(config.sections.tabline_z, attributes_a, window), false)
 end
 
 local function right_component()

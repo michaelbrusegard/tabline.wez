@@ -124,7 +124,7 @@ function M.set(user_opts)
 
   M.component_opts = set_component_opts(user_opts)
   M.opts = util.deep_extend(default_opts, user_opts)
-  M.sections = util.deep_copy(M.opts.sections)
+  M.sections = M.opts.sections
   M.colors = util.deep_extend(get_colors(M.opts.options.theme), color_overrides)
 end
 

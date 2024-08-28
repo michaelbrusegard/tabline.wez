@@ -460,7 +460,7 @@ local my_extension = {
   },
   events = {
     start = "my_plugin.start",
-    end = "my_plugin.end",
+    stop = "my_plugin.stop",
   }
 }
 

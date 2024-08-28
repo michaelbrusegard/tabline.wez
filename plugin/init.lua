@@ -42,9 +42,7 @@ function M.setup(opts)
     return require('tabline.tabs').set_title(tab)
   end)
 
-  if type(require('tabline.config').opts.extensions.ressurect) == 'string' then
-    require('tabline.extensions.ressurect')()
-  end
+  require('tabline.extension').load()
 end
 
 function M.apply_to_config(config)
