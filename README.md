@@ -451,7 +451,8 @@ extensions = { "resurrect" }
 
 #### Custom extensions
 
-You can define your own extensions. If you believe an extension may be useful to others, then please submit a PR. Custom extensions requires a start and end event to be defined.
+You can define your own extensions. If you believe an extension may be useful to others, then please submit a PR. Custom extensions requires a start and stop event to be defined.
+If a section is not defined, it will use the default from the config.
 
 ```lua
 local my_extension = {

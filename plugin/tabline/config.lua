@@ -97,7 +97,7 @@ local function get_colors(theme)
       c = { fg = text, bg = mantle },
     },
     tab = {
-      active = { fg = text, bg = surface0 },
+      active = { fg = blue, bg = surface0 },
       inactive = { fg = text, bg = mantle },
     },
   }
@@ -124,7 +124,7 @@ function M.set(user_opts)
 
   M.component_opts = set_component_opts(user_opts)
   M.opts = util.deep_extend(default_opts, user_opts)
-  M.sections = M.opts.sections
+  M.sections = util.deep_copy(M.opts.sections)
   M.colors = util.deep_extend(get_colors(M.opts.options.theme), color_overrides)
 end
 
