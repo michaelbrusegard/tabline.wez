@@ -38,7 +38,7 @@ return function(_, opts)
 
   if opts.icons_enabled then
     local hour = time:format('%H')
-    local icon = opts.hour_to_icon[hour]
+    local icon = opts.icon[hour]
     datetime = icon .. ' ' .. datetime
   end
 
