@@ -22,6 +22,15 @@ Here is a preview of what the tab-bar can look like.
   <img width="1656" alt="tabline 5" src="https://github.com/user-attachments/assets/ff216ab2-8a60-494d-9b11-9295212143df">
 </p>
 
+Some more examples, but very zoomed in.
+
+<p>
+  <img width="1680" alt="tabline 1 big" src="https://github.com/user-attachments/assets/2b48be12-7875-4282-aeb4-c24b0ed2fc1c">
+  <img width="1680" alt="tabline 2 big" src="https://github.com/user-attachments/assets/b3ec5b88-d940-4ff0-9612-0f74d8b003a3">
+  <img width="1680" alt="tabline 3 big" src="https://github.com/user-attachments/assets/00e39a55-5628-4926-9d42-9eff1e00e75c">
+  <img width="1680" alt="tabline 4 big" src="https://github.com/user-attachments/assets/a2d84536-345c-4fce-9b50-d55b2768ae90">
+</p>
+
 `tabline.wez` supports all the same themes as WezTerm. You can find the list of themes [here](https://wezfurlong.org/wezterm/colorschemes/index.html).
 
 ## Installation
