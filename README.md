@@ -105,7 +105,7 @@ tabline.get_config()
 ```
 
 > [!CAUTION]
-> There are currently some issues with the `cpu` and `ram` components on windows/linux so I would recommend disabling them unti it has been resolved.
+> There are currently some issues with the `cpu` and `ram` components on windows/linux so I would recommend disabling them until it has been resolved.
 
 #### Config options
 
