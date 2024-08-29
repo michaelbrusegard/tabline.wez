@@ -277,7 +277,7 @@ sections = { tabline_a = { hello } }
 ```
 
 > [!NOTE]
-> Functions receive the `Window` object or `TabInformation` object as the first argument depending on the component group. The second argument is always an opts table with the provided options
+> Functions receive the `Window` object or `TabInformation` object as the first argument depending on the component group
 
 ##### Text string as tabline component
 
