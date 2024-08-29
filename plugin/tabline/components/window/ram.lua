@@ -50,10 +50,6 @@ return {
       ram = string.format('%.2f GB', total_memory)
     end
 
-    if opts.icons_enabled then
-      ram = opts.icon .. ' ' .. ram
-    end
-
     last_update_time = current_time
     last_result = ram
 

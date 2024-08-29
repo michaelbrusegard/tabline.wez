@@ -1,7 +1,7 @@
 local wezterm = require('wezterm')
 
 return {
-  update = function(window, opts)
+  update = function(window)
     local cwd_uri = window:active_pane():get_current_working_dir()
     local hostname = ''
 

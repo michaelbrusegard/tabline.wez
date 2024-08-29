@@ -1,8 +1,10 @@
 local wezterm = require('wezterm')
+local util = require('tabline.util')
+
 return {
   default_opts = {
     style = '%H:%M',
-    icon = {
+    hour_to_icon = {
       ['00'] = wezterm.nerdfonts.md_clock_time_twelve_outline,
       ['01'] = wezterm.nerdfonts.md_clock_time_one_outline,
       ['02'] = wezterm.nerdfonts.md_clock_time_two_outline,
@@ -33,10 +35,9 @@ return {
     local time = wezterm.time.now()
     local datetime = time:format(opts.style)
 
-    if opts.icons_enabled then
+    if opts.icons_enabled and opts.hour_to_icon then
       local hour = time:format('%H')
-      local icon = opts.icon[hour]
-      datetime = icon .. ' ' .. datetime
+      util.overwrite_icon(opts, opts.hour_to_icon[hour])
     end
 
     return datetime

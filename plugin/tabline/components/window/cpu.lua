@@ -49,10 +49,6 @@ return {
 
     cpu = string.format('%.2f%%', cpu)
 
-    if opts.icons_enabled then
-      cpu = opts.icon .. ' ' .. cpu
-    end
-
     last_update_time = current_time
     last_result = cpu
 

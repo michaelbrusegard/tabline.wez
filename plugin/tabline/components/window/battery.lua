@@ -1,8 +1,9 @@
 local wezterm = require('wezterm')
+local util = require('tabline.util')
 
 return {
   default_opts = {
-    icon = {
+    battery_to_icon = {
       empty = wezterm.nerdfonts.fa_battery_empty,
       quarter = wezterm.nerdfonts.fa_battery_quarter,
       half = wezterm.nerdfonts.fa_battery_half,
@@ -12,24 +13,22 @@ return {
   },
   update = function(_, opts)
     local bat = ''
-    local bat_icon = ''
     for _, b in ipairs(wezterm.battery_info()) do
       local charge = b.state_of_charge * 100
       bat = string.format('%.0f%%', charge)
-      if charge <= 10 then
-        bat_icon = opts.icon.empty
-      elseif charge <= 25 then
-        bat_icon = opts.icon.quarter
-      elseif charge <= 50 then
-        bat_icon = opts.icon.half
-      elseif charge <= 75 then
-        bat_icon = opts.icon.three_quarters
-      else
-        bat_icon = opts.icon.full
+      if opts.icons_enabled and opts.battery_to_icon then
+        if charge <= 10 then
+          util.overwrite_icon(opts, opts.battery_to_icon.empty)
+        elseif charge <= 25 then
+          util.overwrite_icon(opts, opts.battery_to_icon.quarter)
+        elseif charge <= 50 then
+          util.overwrite_icon(opts, opts.battery_to_icon.half)
+        elseif charge <= 75 then
+          util.overwrite_icon(opts, opts.battery_to_icon.three_quarters)
+        else
+          util.overwrite_icon(opts, opts.battery_to_icon.full)
+        end
       end
-    end
-    if opts.icons_enabled then
-      bat = bat_icon .. ' ' .. bat
     end
     return bat
   end,

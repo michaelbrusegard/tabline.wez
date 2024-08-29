@@ -392,6 +392,15 @@ sections = {
     {
       'mode',
       icons_enabled = true, -- Enables the display of icons alongside the component.
+      -- Defines the icon to be displayed in front of the component.
+      -- Can be string|table
+      -- As table it must contain the icon as first entry and can use
+      -- color option to custom color the icon. Example:
+      -- { 'workspace', icon = wezterm.nerdfonts.cod_terminal_tmux } / { 'workspace', icon = { wezterm.nerdfonts.cod_terminal_tmux, color = { fg= '#00ff00' } } }
+
+      -- icon position can also be set to the right side from table. Example:
+      -- {'branch', icon = { wezterm.nerdfonts.cod_terminal_tmux, align = 'right', color = { fg = '#00ff00' } } }
+      icon = nil,
 
       cond = nil, -- Condition function, the component is loaded when the function returns `true`.
 
@@ -425,6 +434,15 @@ sections = {
       'datetime',
       -- options: your own format string ('%Y/%m/%d %H:%M:%S', etc.)
       style = '%H:%M',
+      hour_to_icon = {
+        ['00'] = wezterm.nerdfonts.md_clock_time_twelve_outline,
+        ['01'] = wezterm.nerdfonts.md_clock_time_one_outline,
+        ['02'] = wezterm.nerdfonts.md_clock_time_two_outline,
+        -- for every hour...
+        ['23'] = wezterm.nerdfonts.md_clock_time_eleven,
+      },
+    -- hour_to_icon is a table that maps hours to icons it overwrites the default icon property. To use the default icon property set hour_to_icon to nil. The color and align properties can still be used on the icon property
+    },
     },
   },
 }
@@ -466,6 +484,23 @@ sections = {
       throttle = 3, -- How often in seconds the component updates, set to 0 to disable throttling
     },
   },
+}
+```
+
+#### battery component options
+
+```lua
+sections = {
+  battery_to_icon = {
+    empty = wezterm.nerdfonts.fa_battery_empty,
+    quarter = wezterm.nerdfonts.fa_battery_quarter,
+    half = wezterm.nerdfonts.fa_battery_half,
+    three_quarters = wezterm.nerdfonts.fa_battery_three_quarters,
+    full = wezterm.nerdfonts.fa_battery_full,
+  }
+-- battery_to_icon is a table that maps battery percentage to icons
+-- It overwrites the default icon property. To use the default icon property set battery_to_icon to nil
+-- The color and align properties can still be used on the icon property
 }
 ```
 

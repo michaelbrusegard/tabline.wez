@@ -1,4 +1,5 @@
 local wezterm = require('wezterm')
+
 local M = {}
 
 function M.deep_extend(t1, t2)
@@ -82,9 +83,9 @@ function M.extract_components(components_opts, attributes, object)
           if result.default_opts then
             opts = M.deep_extend(result.default_opts, opts)
           end
-          local component = M.create_component(result.update(object, opts), opts, object)
+          local component = M.create_component(result.update(object, opts), opts, object, attributes)
           if component then
-            M.insert_elements(components, component)
+            table.insert(components, component)
           end
         else
           table.insert(components, { Text = v .. '' })
@@ -98,9 +99,9 @@ function M.extract_components(components_opts, attributes, object)
         if result.default_opts then
           opts = M.deep_extend(result.default_opts, opts)
         end
-        local component = M.create_component(result.update(object, opts), opts, object)
+        local component = M.create_component(result.update(object, opts), opts, object, attributes)
         if component then
-          M.insert_elements(components, component)
+          table.insert(components, component)
         end
       end
     elseif type(v) == 'function' then
@@ -112,16 +113,16 @@ function M.extract_components(components_opts, attributes, object)
   return components
 end
 
-function M.create_component(name, opts, object)
-  wezterm.log_info(opts)
+function M.create_component(name, opts, object, attributes)
   if opts.cond and not opts.cond(object) then
     return
   end
   if opts.fmt then
     name = opts.fmt(name, object)
   end
+  local left_padding_element, right_padding_element
+  local left_padding, right_padding
   if opts.padding then
-    local left_padding, right_padding
     if type(opts.padding) == 'table' then
       left_padding = string.rep(' ', opts.padding.left or 0)
       right_padding = string.rep(' ', opts.padding.right or 0)
@@ -129,9 +130,58 @@ function M.create_component(name, opts, object)
       left_padding = string.rep(' ', opts.padding)
       right_padding = left_padding
     end
+    left_padding_element = { Text = left_padding }
+    right_padding_element = { Text = right_padding }
+  end
+  if opts.icons_enabled and opts.icon then
+    local icon_name = {}
+    table.insert(icon_name, left_padding_element)
+    if type(opts.icon) == 'table' then
+      if opts.icon.align == 'right' then
+        table.insert(icon_name, { Text = name })
+        if opts.icon.color then
+          if opts.icon.color.fg then
+            table.insert(icon_name, { Foreground = opts.icon.color.fg })
+          end
+          if opts.icon.color.bg then
+            table.insert(icon_name, { Background = opts.icon.color.bg })
+          end
+        end
+        table.insert(icon_name, { Text = ' ' .. opts.icon[1] })
+        M.insert_elements(icon_name, reset_attributes)
+        M.insert_elements(icon_name, attributes)
+      else
+        if opts.icon.color then
+          if opts.icon.color.fg then
+            table.insert(icon_name, { Foreground = opts.icon.color.fg })
+          end
+          if opts.icon.color.bg then
+            table.insert(icon_name, { Background = opts.icon.color.bg })
+          end
+        end
+        table.insert(icon_name, { Text = opts.icon[1] .. ' ' })
+        M.insert_elements(icon_name, reset_attributes)
+        M.insert_elements(icon_name, attributes)
+        table.insert(icon_name, { Text = name })
+      end
+    else
+      table.insert(icon_name, { Text = opts.icon .. ' ' })
+      table.insert(icon_name, { Text = name })
+    end
+    table.insert(icon_name, right_padding_element)
+    name = wezterm.format(icon_name)
+  else
     name = left_padding .. name .. right_padding
   end
-  return { { Text = name } }
+  return { Text = name }
+end
+
+function M.overwrite_icon(opts, new_icon)
+  if type(opts.icon) == 'table' then
+    opts.icon[1] = new_icon
+  else
+    opts.icon = new_icon
+  end
 end
 
 return M
