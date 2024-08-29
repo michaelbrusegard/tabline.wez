@@ -104,6 +104,9 @@ do so with:
 tabline.get_config()
 ```
 
+> [!CAUTION]
+> There are currently some issues with the `cpu` and `ram` components on windows/linux so I would recommend disabling them unti it has been resolved.
+
 #### Config options
 
 Tabline requires that some options are applied to the WezTerm [Config](https://wezfurlong.org/wezterm/config/lua/config/index.html) struct. For example the retro tab-bar must be enabled. Tabline provides a function to apply some recommended options to the config. If you already set these options in your `wezterm.lua` you do not need this function.
