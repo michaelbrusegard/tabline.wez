@@ -11,6 +11,6 @@ return {
         cwd = cwd:sub(1, opts.max_length - 1) .. '…'
       end
     end
-    return cwd
+    return cwd or ''
   end,
 }
