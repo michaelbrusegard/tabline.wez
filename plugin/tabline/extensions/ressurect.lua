@@ -3,7 +3,7 @@ local config = require('tabline.config')
 return {
   {
     events = {
-      start = 'resurrect.periodic_save',
+      show = 'resurrect.periodic_save',
       delay = 7,
     },
     sections = {

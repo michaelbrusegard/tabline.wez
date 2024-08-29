@@ -3,8 +3,6 @@ local util = require('tabline.util')
 
 local M = {}
 
-local reset = 'ResetAttributes'
-local space = { Text = ' ' }
 local left_tab_separator = { Text = config.opts.options.tab_separators.left or config.opts.options.tab_separators }
 local right_tab_separator = { Text = config.opts.options.tab_separators.right or config.opts.options.tab_separators }
 local active_attributes, inactive_attributes, active_separator_attributes, inactive_separator_attributes =
@@ -41,21 +39,15 @@ local function tabs(tab)
   if #tab_active > 0 and tab.is_active then
     util.insert_elements(result, active_separator_attributes)
     table.insert(result, right_tab_separator)
-    table.insert(result, reset)
     util.insert_elements(result, active_attributes)
-    table.insert(result, space)
     util.insert_elements(result, tab_active)
-    table.insert(result, space)
     util.insert_elements(result, active_separator_attributes)
     table.insert(result, left_tab_separator)
   elseif #tab_inactive > 0 then
     util.insert_elements(result, inactive_separator_attributes)
     table.insert(result, right_tab_separator)
-    table.insert(result, reset)
     util.insert_elements(result, inactive_attributes)
-    table.insert(result, space)
     util.insert_elements(result, tab_inactive)
-    table.insert(result, space)
     util.insert_elements(result, inactive_separator_attributes)
     table.insert(result, left_tab_separator)
   end

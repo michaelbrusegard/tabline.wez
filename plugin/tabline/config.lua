@@ -28,15 +28,14 @@ local default_opts = {
   sections = {
     tabline_a = { 'mode' },
     tabline_b = { 'workspace' },
-    tabline_c = {},
+    tabline_c = { ' ' },
     tab_active = {
       'tab_index',
-      ' ',
-      'parent',
+      { 'parent', padding = 0 },
       '/',
-      'cwd',
+      { 'cwd', padding = { left = 0, right = 1 } },
     },
-    tab_inactive = { 'tab_index', ' ', 'process' },
+    tab_inactive = { 'tab_index', { 'process', padding = { left = 0, right = 1 } } },
     tabline_x = { 'ram', 'cpu' },
     tabline_y = { 'datetime', 'battery' },
     tabline_z = { 'hostname' },
@@ -46,9 +45,7 @@ local default_opts = {
 
 local default_component_opts = {
   icons_enabled = true,
-  fmt = function(name)
-    return name
-  end,
+  padding = 1,
 }
 
 local function lighten_color(color, percent)

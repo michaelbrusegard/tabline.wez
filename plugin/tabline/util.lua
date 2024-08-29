@@ -1,3 +1,4 @@
+local wezterm = require('wezterm')
 local M = {}
 
 function M.deep_extend(t1, t2)
@@ -56,9 +57,9 @@ local reset_attributes = {
   { Attribute = { Italic = false } },
 }
 
-local function require_component(window, v)
+local function require_component(object, v)
   local component
-  if window.tab_id then
+  if object.tab_id then
     component = 'tabline.components.tab.' .. v
   else
     component = 'tabline.components.window.' .. v
@@ -66,7 +67,7 @@ local function require_component(window, v)
   return component
 end
 
-function M.extract_components(components_opts, attributes, window)
+function M.extract_components(components_opts, attributes, object)
   local component_opts = require('tabline.config').component_opts
   local components = {}
   for _, v in ipairs(components_opts) do
@@ -75,29 +76,62 @@ function M.extract_components(components_opts, attributes, window)
         M.insert_elements(components, reset_attributes)
         M.insert_elements(components, attributes)
       else
-        local ok, result = pcall(require, require_component(window, v))
+        local ok, result = pcall(require, require_component(object, v))
         if ok then
-          table.insert(components, { Text = component_opts.fmt(result(window, component_opts), window) .. '' })
+          local opts = M.deep_copy(component_opts)
+          if result.default_opts then
+            opts = M.deep_extend(result.default_opts, opts)
+          end
+          local component = M.create_component(result.update(object, opts), opts, object)
+          if component then
+            M.insert_elements(components, component)
+          end
         else
           table.insert(components, { Text = v .. '' })
         end
       end
     elseif type(v) == 'table' and type(v[1]) == 'string' then
-      local ok, result = pcall(require, require_component(window, v[1]))
+      local ok, result = pcall(require, require_component(object, v[1]))
       if ok then
         local opts = M.deep_extend(M.deep_copy(component_opts), v)
         table.remove(opts, 1)
-        if type(opts.cond) ~= 'function' or opts.cond(window) then
-          table.insert(components, { Text = opts.fmt(result(window, opts), window) .. '' })
+        if result.default_opts then
+          opts = M.deep_extend(result.default_opts, opts)
+        end
+        local component = M.create_component(result.update(object, opts), opts, object)
+        if component then
+          M.insert_elements(components, component)
         end
       end
     elseif type(v) == 'function' then
-      table.insert(components, { Text = v(window) .. '' })
+      table.insert(components, { Text = v(object) .. '' })
     elseif type(v) == 'table' then
       table.insert(components, v)
     end
   end
   return components
+end
+
+function M.create_component(name, opts, object)
+  wezterm.log_info(opts)
+  if opts.cond and not opts.cond(object) then
+    return
+  end
+  if opts.fmt then
+    name = opts.fmt(name, object)
+  end
+  if opts.padding then
+    local left_padding, right_padding
+    if type(opts.padding) == 'table' then
+      left_padding = string.rep(' ', opts.padding.left or 0)
+      right_padding = string.rep(' ', opts.padding.right or 0)
+    else
+      left_padding = string.rep(' ', opts.padding)
+      right_padding = left_padding
+    end
+    name = left_padding .. name .. right_padding
+  end
+  return { { Text = name } }
 end
 
 return M

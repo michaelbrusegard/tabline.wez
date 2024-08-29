@@ -72,15 +72,14 @@ tabline.setup({
   sections = {
     tabline_a = { 'mode' },
     tabline_b = { 'workspace' },
-    tabline_c = {},
+    tabline_c = { ' ' },
     tab_active = {
       'tab_index',
-      ' ',
-      'parent',
+      { 'parent', padding = 0 },
       '/',
-      'cwd',
+      { 'cwd', padding = { left = 0, right = 1 } },
     },
-    tab_inactive = { 'tab_index', ' ', 'process' },
+    tab_inactive = { 'tab_index', { 'process', padding = { left = 0, right = 1 } } },
     tabline_x = { 'ram', 'cpu' },
     tabline_y = { 'datetime', 'battery' },
     tabline_z = { 'hostname' },
@@ -384,7 +383,12 @@ sections = {
     {
       'mode',
       icons_enabled = true, -- Enables the display of icons alongside the component.
+
       cond = nil, -- Condition function, the component is loaded when the function returns `true`.
+
+      padding = 1, -- Adds padding to the left and right of components.
+                   -- Padding can be specified to left or right independently, e.g.:
+                   --   padding = { left = left_padding, right = right_padding }
 
       fmt = nil, -- Format function, formats the component's output.
       -- This function receives two arguments:
@@ -424,7 +428,7 @@ sections = {
   tab_active = {
     {
       'cwd',
-      max_length = 16, -- Max length before it is truncated
+      max_length = 10, -- Max length before it is truncated
     },
   },
 }
@@ -476,18 +480,18 @@ extensions = { 'resurrect' }
 #### Custom extensions
 
 You can define your own extensions. If you believe an extension may be useful to others, then please submit a PR.
-Custom extensions requires a start event to be defined. You can also define a stop event and a delay.
-If the stop event is defined the delay will be how long it waits to stop the extension after the stop event is triggered.
-If the stop event is not defined it will stop the extension after the delay. Delay is by default 5 seconds if the stop event is not defined.
+Custom extensions requires a show event to be defined. You can also define a hide event and/or a delay.
+If the hide event is defined the delay will be how long it waits to hide the extension after the hide event is triggered.
+If the hide event is not defined it will hide the extension after the delay. Delay is by default 5 seconds if the hide event is not defined.
 If a section is not defined, it will use the default from the config.
 
 ```lua
 local my_extension = {
-    events = {
-        start = 'my_plugin.start',
-        stop = 'my_plugin.stop',
-        delay = 3
-    },
+  events = {
+    show = 'my_plugin.show',
+    hide = 'my_plugin.hide',
+    delay = 3
+  },
   sections = {
     tabline_a = { 'mode' }
   }
