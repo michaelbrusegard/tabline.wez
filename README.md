@@ -559,12 +559,12 @@ tabline.refresh(window, tab)
 Avoid calling `tabline.refresh` inside components. Since components are evaluated
 during refresh, calling refresh while refreshing can have undesirable effects.
 
-### Contributors
+### Disabling tabline
+
+You can also disable tabline completely. By setting the [enable_tab_bar](https://wezfurlong.org/wezterm/config/lua/config/enable_tab_bar.html) option to false in the WezTerm config.
+
+### Inspiration
 
 Thanks to [MLFlexer](https://github.com/MLFlexer) for some tips in developing a plugin for WezTerm.
 
 Thanks to [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) for the inspiration and a nice statusline for my Neovim.
-
-```
-
-```
