@@ -7,6 +7,7 @@ M.opts = {}
 M.sections = {}
 M.component_opts = {}
 M.colors = {}
+M.normal_mode_colors = {}
 
 local default_opts = {
   options = {
@@ -78,12 +79,14 @@ local function get_colors(theme)
     end
   end
 
+  M.normal_mode_colors = {
+    a = { fg = mantle, bg = blue },
+    b = { fg = blue, bg = surface0 },
+    c = { fg = text, bg = mantle },
+  }
+
   return {
-    normal_mode = {
-      a = { fg = mantle, bg = blue },
-      b = { fg = blue, bg = surface0 },
-      c = { fg = text, bg = mantle },
-    },
+    normal_mode = util.deep_copy(M.normal_mode_colors),
     copy_mode = {
       a = { fg = mantle, bg = yellow },
       b = { fg = yellow, bg = surface0 },

@@ -8,11 +8,15 @@ return {
     },
     sections = {
       tabline_a = {
-        ' Switch to Workspace: ',
+        ' Switch Workspace ',
       },
       tabline_c = {},
       tab_active = {},
       tab_inactive = {},
+    },
+    colors = {
+      a = { bg = config.colors.scheme.compose_cursor },
+      b = { fg = config.colors.scheme.compose_cursor },
     },
   },
 }

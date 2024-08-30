@@ -532,10 +532,13 @@ extensions = { 'resurrect' }
 #### Custom extensions
 
 You can define your own extensions. If you believe an extension may be useful to others, then please submit a PR.
-Custom extensions requires a show event to be defined. You can also define a hide event and/or a delay.
-If the hide event is defined the delay will be how long it waits to hide the extension after the hide event is triggered.
-If the hide event is not defined it will hide the extension after the delay. Delay is by default 5 seconds if the hide event is not defined.
-If a section is not defined, it will use the default from the config.
+
+Custom extensions requires a `show` event to be defined. When the `show` event is triggered the defined `sections` will be shown. If a section in `sections` is not defined it will use the default from the config.
+The `hide` event is optional. When the `hide` event is triggered the extension will hide the defined `sections`.
+If the `hide` event is not defined the extension will hide the `sections` after the `delay` which is set to 5 seconds by default.
+You can also have a `delay` with the `hide` event, which will delay the hide for the specified time in seconds after the `hide` event is triggered.
+You can also have a optional `callback` function that will be called when the `show` event is triggered with the properties from the event.
+The `colors` overwrite the default colors for the extension to use with its `sections`.
 
 ```lua
 local my_extension = {
@@ -543,9 +546,17 @@ local my_extension = {
     show = 'my_plugin.show',
     hide = 'my_plugin.hide',
     delay = 3
+    callback = function(window)
+      print('Extension was shown')
+    end
   },
   sections = {
     tabline_a = { 'mode' }
+  },
+  colors = {
+    a = { fg = '#181825', bg = '#f38ba8' },
+    b = { fg = '#f38ba8', bg = '#313244' },
+    c = { fg = '#cdd6f4', bg = '#181825' },
   }
 }
 
