@@ -28,7 +28,7 @@ return {
     sections = {
       tabline_x = {
         { Foreground = { Color = config.colors.scheme.indexed[16] } },
-        wezterm.nerdfonts.cod_save .. ' saved workspace',
+        wezterm.nerdfonts.cod_save .. ' saved workspace ',
       },
     },
   },
