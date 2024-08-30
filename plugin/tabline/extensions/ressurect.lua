@@ -5,7 +5,7 @@ return {
   {
     events = {
       show = 'resurrect.fuzzy_load.start',
-      hide = 'resurrect.fuzzy_load.stop',
+      hide = 'resurrect.fuzzy_load.finished',
     },
     sections = {
       tabline_a = {
