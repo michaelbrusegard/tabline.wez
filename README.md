@@ -448,7 +448,9 @@ sections = {
         -- for every hour...
         ['23'] = wezterm.nerdfonts.md_clock_time_eleven,
       },
-    -- hour_to_icon is a table that maps hours to icons it overwrites the default icon property. To use the default icon property set hour_to_icon to nil. The color and align properties can still be used on the icon property
+    -- hour_to_icon is a table that maps hours to icons it overwrites the default icon property.
+    -- To use the default icon property set hour_to_icon to nil.
+    -- The color and align properties can still be used on the icon property.
     },
     },
   },
