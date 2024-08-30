@@ -104,10 +104,10 @@ do so with:
 tabline.get_config()
 ```
 
-> [!CAUTION]
-> There are currently some issues with the `cpu` and `ram` components on windows/linux so I would recommend disabling them until it has been resolved. You can disable them by setting `tabline_x` to something else or an empty table.
+> [!WARNING]
+> There are currently some issues with the `cpu` and `ram` components on windows/linux so I would recommend disabling them until it has been resolved. You can disable them by setting `tabline_x` to something else or an empty table. If you want to help test on windows/linux please let me know.
 
-#### Config options
+#### WezTerm configuration
 
 Tabline requires that some options are applied to the WezTerm [Config](https://wezfurlong.org/wezterm/config/lua/config/index.html) struct. For example the retro tab-bar must be enabled. Tabline provides a function to apply some recommended options to the config. If you already set these options in your `wezterm.lua` you do not need this function.
 
@@ -115,8 +115,8 @@ Tabline requires that some options are applied to the WezTerm [Config](https://w
 tabline.apply_to_config(config)
 ```
 
-> [!WARNING]
-> This function must be called AFTER the `tabline.setup` function.
+> [!CAUTION]
+> This function has nothing to do with the tabline config passed into setup and retrieved with `tabline.get_config()`. It only applies some recommended options to the WezTerm config.
 
 ---
 
