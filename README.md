@@ -105,7 +105,7 @@ tabline.get_config()
 ```
 
 > [!CAUTION]
-> There are currently some issues with the `cpu` and `ram` components on windows/linux so I would recommend disabling them until it has been resolved.
+> There are currently some issues with the `cpu` and `ram` components on windows/linux so I would recommend disabling them until it has been resolved. You can disable them by setting `tabline_x` to something else or an empty table.
 
 #### Config options
 
@@ -159,30 +159,32 @@ This is also where you would specify the colors for a new [Key Table](https://we
 tabline.setup({
   options = {
     color_overrides = {
+    -- Default colors from Catppuccin Mocha
       normal_mode = {
-        a = { fg = mantle, bg = blue },
-        b = { fg = blue, bg = surface0 },
-        c = { fg = text, bg = mantle },
+        a = { fg = '#181825', bg = '#89b4fa' },
+        b = { fg = '#89b4fa', bg = '#313244' },
+        c = { fg = '#cdd6f4', bg = '#181825' },
       },
       copy_mode = {
-        a = { fg = mantle, bg = yellow },
-        b = { fg = yellow, bg = surface0 },
-        c = { fg = text, bg = mantle },
+        a = { fg = '#181825', bg = '#f9e2af' },
+        b = { fg = '#f9e2af', bg = '#313244' },
+        c = { fg = '#cdd6f4', bg = '#181825' },
       },
       search_mode = {
-        a = { fg = mantle, bg = green },
-        b = { fg = green, bg = surface0 },
-        c = { fg = text, bg = mantle },
+        a = { fg = '#181825', bg = '#a6e3a1' },
+        b = { fg = '#a6e3a1', bg = '#313244' },
+        c = { fg = '#cdd6f4', bg = '#181825' },
       },
       -- Defining colors for a new key table
       window_mode = {
-        a = { fg = mantle, bg = purple },
-        b = { fg = purple, bg = surface0 },
-        c = { fg = text, bg = mantle },
+        a = { fg = '#181825', bg = '#cba6f7' },
+        b = { fg = '#cba6f7', bg = '#313244' },
+        c = { fg = '#cdd6f4', bg = '#181825' },
       },
+      -- Default tab colors
       tab = {
-        active = { fg = text, bg = surface0 },
-        inactive = { fg = text, bg = mantle },
+        active = { fg = '#cdd6f4', bg = '#313244' },
+        inactive = { fg = '#cdd6f4', bg = '#181825' },
       }
     }
   }
@@ -196,6 +198,8 @@ If you want to get the colors used in the current theme, you can do so with:
 ```lua
 tabline.get_colors()
 ```
+
+You will get an object like the `color_overrides` object above, but with the addition of a scheme property (the scheme property is the scheme object from WezTerm with every color found there).
 
 > [!TIP]
 > This can be useful when creatting your own components or extensions and you want to use the same colors as the current theme
@@ -523,6 +527,7 @@ extensions = { 'resurrect' }
 #### Available extensions
 
 - resurrect
+- smart_workspace_switcher
 
 #### Custom extensions
 

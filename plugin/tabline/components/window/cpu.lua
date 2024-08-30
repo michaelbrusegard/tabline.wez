@@ -13,33 +13,41 @@ return {
     if current_time - last_update_time < opts.throttle then
       return last_result
     end
-    local os_name = os.getenv('OS')
-    local handle
-    if os_name == 'Windows_NT' then
-      handle = io.popen(
-        'powershell -Command "Get-WmiObject -Query \\"SELECT * FROM Win32_Processor\\" | ForEach-Object -MemberName LoadPercentage"'
-      )
-    elseif os_name == 'Linux' then
-      handle = io.popen("awk '/^cpu / {print ($2+$4)*100/($2+$4+$5)}' /proc/stat")
-    else
-      handle = io.popen('ps -A -o %cpu | awk \'{s+=$1} END {print s ""}\'')
+    local success, result
+    if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+      success, result = wezterm.run_child_process {
+        'powershell',
+        '-Command',
+        'Get-WmiObject -Query "SELECT * FROM Win32_Processor" | ForEach-Object -MemberName LoadPercentage',
+      }
+    elseif wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
+      success, result = wezterm.run_child_process {
+        'bash',
+        '-c',
+        "awk '/^cpu / {print ($2+$4)*100/($2+$4+$5)}' /proc/stat",
+      }
+    elseif wezterm.target_triple == 'x86_64-apple-darwin' or wezterm.target_triple == 'aarch64-apple-darwin' then
+      success, result = wezterm.run_child_process {
+        'bash',
+        '-c',
+        'ps -A -o %cpu | awk \'{s+=$1} END {print s ""}\'',
+      }
     end
 
-    if not handle then
+    if not success then
       return ''
     end
 
-    local result = handle:read('*a')
-    handle:close()
-
     local cpu = result:gsub('^%s*(.-)%s*$', '%1')
 
-    if os_name ~= 'Windows_NT' and os_name ~= 'Linux' then
-      local handle_cores = io.popen('sysctl -n hw.ncpu')
-      if handle_cores then
-        local num_cores = handle_cores:read('*a')
-        handle_cores:close()
-        num_cores = tonumber(num_cores)
+    if wezterm.target_triple == '-86_64-apple-darwin' or wezterm.target_triple == 'aarch64-apple-darwin' then
+      success, result = wezterm.run_child_process {
+        'sysctl',
+        '-n',
+        'hw.ncpu',
+      }
+      if success then
+        local num_cores = tonumber(result)
         local cpu_num = tonumber(cpu)
         if num_cores and cpu_num then
           cpu = cpu_num / num_cores

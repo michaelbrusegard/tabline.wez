@@ -10,15 +10,18 @@ local function setup_extension(extension)
   if sections and events then
     wezterm.on(events.show, function()
       config.sections = sections
+      wezterm.log_info('Showing extension')
       if not events.hide then
         wezterm.time.call_after(events.delay or 5, function()
-          wezterm.log_info(config.opts.sections)
+          wezterm.log_info('closing after time')
           config.sections = config.opts.sections
         end)
       end
     end)
-    if events.stop then
-      wezterm.on(events.stop, function()
+    if events.hide then
+      wezterm.log_info('setup hiding')
+      wezterm.on(events.hide, function()
+        wezterm.log_info('Hiding extension')
         if events.delay then
           wezterm.time.call_after(events.delay, function()
             config.sections = config.opts.sections

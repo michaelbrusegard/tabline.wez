@@ -7,7 +7,6 @@ M.opts = {}
 M.sections = {}
 M.component_opts = {}
 M.colors = {}
-M.scheme = {}
 
 local default_opts = {
   options = {
@@ -61,20 +60,20 @@ local function lighten_color(color, percent)
 end
 
 local function get_colors(theme)
-  M.scheme = wezterm.color.get_builtin_schemes()[theme]
+  local scheme = wezterm.color.get_builtin_schemes()[theme]
 
-  local mantle = M.scheme.background
-  local surface0 = lighten_color(M.scheme.background, 0.1)
-  local blue = M.scheme.ansi[5]
-  local text = M.scheme.foreground
-  local yellow = M.scheme.ansi[4]
-  local green = M.scheme.ansi[3]
+  local mantle = scheme.background
+  local surface0 = lighten_color(scheme.background, 0.1)
+  local blue = scheme.ansi[5]
+  local text = scheme.foreground
+  local yellow = scheme.ansi[4]
+  local green = scheme.ansi[3]
 
-  if M.scheme.tab_bar then
-    if M.scheme.tab_bar.inactive_tab then
-      mantle = M.scheme.tab_bar.inactive_tab.bg_color or mantle
-      if M.scheme.tab_bar.inactive_tab_edge ~= mantle then
-        surface0 = M.scheme.tab_bar.inactive_tab_edge or surface0
+  if scheme.tab_bar then
+    if scheme.tab_bar.inactive_tab then
+      mantle = scheme.tab_bar.inactive_tab.bg_color or mantle
+      if scheme.tab_bar.inactive_tab_edge ~= mantle then
+        surface0 = scheme.tab_bar.inactive_tab_edge or surface0
       end
     end
   end
@@ -99,6 +98,7 @@ local function get_colors(theme)
       active = { fg = blue, bg = surface0 },
       inactive = { fg = text, bg = mantle },
     },
+    scheme = scheme,
   }
 end
 
