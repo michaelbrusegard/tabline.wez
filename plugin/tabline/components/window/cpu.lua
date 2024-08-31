@@ -16,9 +16,9 @@ return {
     local success, result
     if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
       success, result = wezterm.run_child_process {
-        'powershell',
-        '-Command',
-        'Get-WmiObject -Query "SELECT * FROM Win32_Processor" | ForEach-Object -MemberName LoadPercentage',
+        'cmd.exe',
+        '/C',
+        'wmic cpu get loadpercentage',
       }
     elseif wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
       success, result = wezterm.run_child_process {
@@ -34,11 +34,16 @@ return {
       }
     end
 
-    if not success then
+    if not success or not result then
       return ''
     end
 
-    local cpu = result:gsub('^%s*(.-)%s*$', '%1')
+    local cpu
+    if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+      cpu = result:match("%d+")
+    else
+      cpu = result:gsub('^%s*(.-)%s*$', '%1')
+    end
 
     if wezterm.target_triple == '-86_64-apple-darwin' or wezterm.target_triple == 'aarch64-apple-darwin' then
       success, result = wezterm.run_child_process {

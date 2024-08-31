@@ -16,23 +16,17 @@ return {
     local success, result
     if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
       success, result = wezterm.run_child_process {
-        'cmd',
+        'cmd.exe',
         '/C',
-        'systeminfo | findstr /C:"Total Physical Memory" /C:"Available Physical Memory"',
+        'wmic OS get FreePhysicalMemory'
       }
-      if success then
-        local total_memory = result[1]:match('Total Physical Memory: +(%d+).')
-        local available_memory = result[2]:match('Available Physical Memory: +(%d+).')
-        local used_memory = total_memory - available_memory
-        result = string.format('%.2f GB', used_memory / 1024 / 1024)
-      end
     elseif wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
       success, result = wezterm.run_child_process { 'bash', '-c', 'free -m | awk \'NR==2{printf "%.2f", $3*100/$2 }\'' }
     elseif wezterm.target_triple == 'x86_64-apple-darwin' or wezterm.target_triple == 'aarch64-apple-darwin' then
       success, result = wezterm.run_child_process { 'vm_stat' }
     end
 
-    if not success then
+    if not success or not result then
       return ''
     end
 
@@ -46,11 +40,15 @@ return {
       local pages_inactive = result:match('Pages inactive: +(%d+).')
       local pages_speculative = result:match('Pages speculative: +(%d+).')
       local total_memory = (pages_free + pages_active + pages_inactive + pages_speculative)
-        * page_size
-        / 1024
-        / 1024
-        / 1024
+          * page_size
+          / 1024
+          / 1024
+          / 1024
       ram = string.format('%.2f GB', total_memory)
+    elseif wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+      ram = result:match("%d+")
+      wezterm.log_warn(ram)
+      ram = string.format('%.2f GB', tonumber(ram) / 1024 / 1024)
     end
 
     last_update_time = current_time

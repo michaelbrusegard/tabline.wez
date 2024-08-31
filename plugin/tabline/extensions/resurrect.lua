@@ -9,7 +9,7 @@ return {
     },
     sections = {
       tabline_a = {
-        ' Resurrect Workspace ',
+        ' ' .. wezterm.nerdfonts.md_sleep_off .. ' Resurrect Workspace ',
       },
       tabline_c = {},
       tab_active = {},
