@@ -47,7 +47,6 @@ return {
       ram = string.format('%.2f GB', total_memory)
     elseif wezterm.target_triple == 'x86_64-pc-windows-msvc' then
       ram = result:match("%d+")
-      wezterm.log_warn(ram)
       ram = string.format('%.2f GB', tonumber(ram) / 1024 / 1024)
     end
 
