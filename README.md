@@ -38,7 +38,7 @@ Some more examples, but very zoomed in.
 ### WezTerm Plugin API
 
 ```lua
- wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
 ```
 
 You'll also need to have a patched font if you want icons.
