@@ -102,10 +102,8 @@ do so with:
 
 ```lua
 tabline.get_config()
-```
 
-> [!WARNING]
-> There are currently some issues with the `cpu` and `ram` components on windows/linux so I would recommend disabling them until it has been resolved. You can disable them by setting `tabline_x` to something else or an empty table. If you want to help test on windows/linux please let me know.
+```
 
 #### WezTerm configuration
 
