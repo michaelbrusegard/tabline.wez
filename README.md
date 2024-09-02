@@ -547,7 +547,7 @@ local my_extension = {
     hide = 'my_plugin.hide',
     delay = 3
     callback = function(window)
-      print('Extension was shown')
+      wezterm.log_info('Extension was shown')
     end
   },
   sections = {
