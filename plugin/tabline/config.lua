@@ -69,6 +69,7 @@ local function get_colors(theme)
   local text = scheme.foreground
   local yellow = scheme.ansi[4]
   local green = scheme.ansi[3]
+  local pink = scheme.ansi[6]
 
   if scheme.tab_bar then
     if scheme.tab_bar.inactive_tab then
@@ -100,6 +101,7 @@ local function get_colors(theme)
     tab = {
       active = { fg = blue, bg = surface0 },
       inactive = { fg = text, bg = mantle },
+      inactive_hover = { fg = pink, bg = surface0 },
     },
     scheme = scheme,
   }
