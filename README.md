@@ -181,8 +181,8 @@ tabline.setup({
       },
       -- Default tab colors
       tab = {
-        active = { fg = '#cdd6f4', bg = '#313244' },
-        inactive = { fg = '#cdd6f4', bg = '#181825' },
+        active = { fg = '#89b4fa', bg = '#313244' },
+        inactive = { fg = '#cdd6f4', bg = '#181825', hover = { fg = '#f5c2e7', bg = '#313244' } },
       }
     }
   }

@@ -38,8 +38,8 @@ function M.setup(opts)
     require('tabline.component').set_status(window)
   end)
 
-  wezterm.on('format-tab-title', function(tab)
-    return require('tabline.tabs').set_title(tab)
+  wezterm.on('format-tab-title', function(tab, _, _, _, hover, _)
+    return require('tabline.tabs').set_title(tab, hover)
   end)
 
   require('tabline.extension').load()

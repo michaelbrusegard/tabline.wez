@@ -9,21 +9,21 @@ local active_attributes, inactive_attributes, active_separator_attributes, inact
   {}, {}, {}, {}
 local tab_active, tab_inactive = {}, {}
 
-local function create_attributes()
+local function create_attributes(hover)
   active_attributes = {
     { Foreground = { Color = config.colors.tab.active.fg } },
     { Background = { Color = config.colors.tab.active.bg } },
   }
   inactive_attributes = {
-    { Foreground = { Color = config.colors.tab.inactive.fg } },
-    { Background = { Color = config.colors.tab.inactive.bg } },
+    { Foreground = { Color = hover and config.colors.tab.inactive.hover.fg or config.colors.tab.inactive.fg } },
+    { Background = { Color = hover and config.colors.tab.inactive.hover.bg or config.colors.tab.inactive.bg } },
   }
   active_separator_attributes = {
     { Foreground = { Color = config.colors.tab.active.bg } },
     { Background = { Color = config.colors.tab.inactive.bg } },
   }
   inactive_separator_attributes = {
-    { Foreground = { Color = config.colors.tab.inactive.bg } },
+    { Foreground = { Color = hover and config.colors.tab.inactive.hover.bg or config.colors.tab.inactive.bg } },
     { Background = { Color = config.colors.tab.inactive.bg } },
   }
 end
@@ -54,8 +54,8 @@ local function tabs(tab)
   return result
 end
 
-M.set_title = function(tab)
-  create_attributes()
+M.set_title = function(tab, hover)
+  create_attributes(hover)
   create_tab_content(tab)
   return tabs(tab)
 end
