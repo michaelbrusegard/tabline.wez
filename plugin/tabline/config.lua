@@ -100,7 +100,8 @@ local function get_colors(theme)
     },
     tab = {
       active = { fg = blue, bg = surface0 },
-      inactive = { fg = text, bg = mantle, hover = { fg = pink, bg = surface0 } },
+      inactive = { fg = text, bg = mantle },
+      inactive_hover = { fg = pink, bg = surface0 },
     },
     scheme = scheme,
   }

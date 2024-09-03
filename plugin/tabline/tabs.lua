@@ -15,15 +15,15 @@ local function create_attributes(hover)
     { Background = { Color = config.colors.tab.active.bg } },
   }
   inactive_attributes = {
-    { Foreground = { Color = hover and config.colors.tab.inactive.hover.fg or config.colors.tab.inactive.fg } },
-    { Background = { Color = hover and config.colors.tab.inactive.hover.bg or config.colors.tab.inactive.bg } },
+    { Foreground = { Color = hover and config.colors.tab.inactive_hover.fg or config.colors.tab.inactive.fg } },
+    { Background = { Color = hover and config.colors.tab.inactive_hover.bg or config.colors.tab.inactive.bg } },
   }
   active_separator_attributes = {
     { Foreground = { Color = config.colors.tab.active.bg } },
     { Background = { Color = config.colors.tab.inactive.bg } },
   }
   inactive_separator_attributes = {
-    { Foreground = { Color = hover and config.colors.tab.inactive.hover.bg or config.colors.tab.inactive.bg } },
+    { Foreground = { Color = hover and config.colors.tab.inactive_hover.bg or config.colors.tab.inactive.bg } },
     { Background = { Color = config.colors.tab.inactive.bg } },
   }
 end
