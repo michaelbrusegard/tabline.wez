@@ -269,6 +269,7 @@ And the `tab_active` and `tab_inactive` components which are grouped under Tab a
   - `parent` (parent directory)
   - `process` (process name)
   - `tab_index` (tab index)
+  - `zoomed` (indicator if tab has zoomed pane)
 
 #### Custom components
 
