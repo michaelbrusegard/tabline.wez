@@ -133,7 +133,7 @@ function M.create_component(name, opts, object, attributes)
     left_padding_element = { Text = left_padding }
     right_padding_element = { Text = right_padding }
   end
-  if opts.icons_enabled and opts.icon then
+  if opts.icons_enabled and opts.icon and not name == 'zoomed' then
     local icon_name = {}
     table.insert(icon_name, left_padding_element)
     if type(opts.icon) == 'table' then
