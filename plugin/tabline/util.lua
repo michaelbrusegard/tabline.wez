@@ -114,6 +114,9 @@ function M.extract_components(components_opts, attributes, object)
 end
 
 function M.create_component(name, opts, object, attributes)
+  if name == nil then
+    return
+  end
   if opts.cond and not opts.cond(object) then
     return
   end
@@ -133,7 +136,7 @@ function M.create_component(name, opts, object, attributes)
     left_padding_element = { Text = left_padding }
     right_padding_element = { Text = right_padding }
   end
-  if opts.icons_enabled and opts.icon and not name == 'zoomed' then
+  if opts.icons_enabled and opts.icon then
     local icon_name = {}
     table.insert(icon_name, left_padding_element)
     if type(opts.icon) == 'table' then

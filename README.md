@@ -87,6 +87,7 @@ tabline.setup({
       { 'parent', padding = 0 },
       '/',
       { 'cwd', padding = { left = 0, right = 1 } },
+      { 'zoomed', padding = 0 },
     },
     tab_inactive = { 'tab_index', { 'process', padding = { left = 0, right = 1 } } },
     tabline_x = { 'ram', 'cpu' },
