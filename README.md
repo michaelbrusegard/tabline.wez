@@ -115,7 +115,7 @@ tabline.apply_to_config(config)
 ```
 
 > [!CAUTION]
-> This function has nothing to do with the tabline config passed into setup and retrieved with `tabline.get_config()`. It only applies some recommended options to the WezTerm config.
+> This function has nothing to do with the tabline config passed into setup and retrieved with `tabline.get_config()`. It only applies some recommended options to the WezTerm config. More info [here](https://github.com/michaelbrusegard/tabline.wez/discussions/3)
 
 ---
 
