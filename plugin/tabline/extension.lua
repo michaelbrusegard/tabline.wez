@@ -7,7 +7,7 @@ local M = {}
 local function set_attributes(sections, colors, window)
   config.sections = sections
   config.colors.normal_mode = colors
-  if window.window_id then
+  if window and window.window_id then
     require('tabline.component').set_status(window)
   end
 end
