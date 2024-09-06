@@ -131,6 +131,9 @@ local function left_section()
 end
 
 function M.set_status(window)
+  if not window.window_id then
+    return
+  end
   create_attributes(window)
   create_sections(window)
   window:set_left_status(wezterm.format(left_section()))
