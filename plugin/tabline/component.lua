@@ -18,7 +18,7 @@ local section_seperator_attributes_a, section_seperator_attributes_b, section_se
 local tabline_a, tabline_b, tabline_c, tabline_x, tabline_y, tabline_z = {}, {}, {}, {}, {}, {}
 
 local function create_attributes(window)
-  local mode = (window and window.active_key_table and window:active_key_table()) or 'normal_mode'
+  local mode = window:active_key_table() or 'normal_mode'
   attributes_a = {
     { Foreground = { Color = config.colors[mode].a.fg } },
     { Background = { Color = config.colors[mode].a.bg } },
