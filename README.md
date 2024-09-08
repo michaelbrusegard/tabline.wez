@@ -566,6 +566,15 @@ local my_extension = {
 tabline.setup({ extensions = { my_extension } })
 ```
 
+You can also pass multiple events to the `show` and `hide` properties.
+
+```lua
+events = {
+  show = { 'my_plugin.show', 'my_plugin.show2' },
+  hide = { 'my_plugin.hide', 'my_plugin.hide2' }
+}
+```
+
 ---
 
 ### Refreshing tabline
