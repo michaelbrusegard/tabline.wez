@@ -12,32 +12,52 @@ local function set_attributes(sections, colors, window)
   end
 end
 
+local function on_show_event(event, events, sections, colors)
+  wezterm.on(event, function(window, ...)
+    set_attributes(sections, colors, window)
+    if not events.hide then
+      wezterm.time.call_after(events.delay or 5, function()
+        set_attributes(config.opts.sections, config.normal_mode_colors, window)
+      end)
+    end
+    if events.callback then
+      events.callback(window, ...)
+    end
+  end)
+end
+
+local function on_hide_event(event, events)
+  wezterm.on(event, function(window)
+    if events.delay then
+      wezterm.time.call_after(events.delay, function()
+        set_attributes(config.opts.sections, config.normal_mode_colors, window)
+      end)
+    else
+      set_attributes(config.opts.sections, config.normal_mode_colors, window)
+    end
+  end)
+end
+
 local function setup_extension(extension)
   local sections = util.deep_extend(util.deep_copy(config.opts.sections), extension.sections or {})
   local colors = util.deep_extend(util.deep_copy(config.normal_mode_colors), extension.colors or {})
   local events = extension.events
   if sections and events then
-    wezterm.on(events.show, function(window, ...)
-      set_attributes(sections, colors, window)
-      if not events.hide then
-        wezterm.time.call_after(events.delay or 5, function()
-          set_attributes(config.opts.sections, config.normal_mode_colors, window)
-        end)
+    if type(events.show) == 'string' then
+      on_show_event(events.show, events, sections, colors)
+    else
+      for _, event in ipairs(events.show) do
+        on_show_event(event, events, sections, colors)
       end
-      if events.callback then
-        events.callback(window, ...)
-      end
-    end)
+    end
     if events.hide then
-      wezterm.on(events.hide, function(window)
-        if events.delay then
-          wezterm.time.call_after(events.delay, function()
-            set_attributes(config.opts.sections, config.normal_mode_colors, window)
-          end)
-        else
-          set_attributes(config.opts.sections, config.normal_mode_colors, window)
+      if type(events.hide) == 'string' then
+        on_hide_event(events.hide, events)
+      elseif type(events.hide) == 'table' then
+        for _, event in ipairs(events.hide) do
+          on_hide_event(event, events)
         end
-      end)
+      end
     end
   end
 end

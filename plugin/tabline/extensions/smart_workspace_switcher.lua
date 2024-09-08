@@ -4,7 +4,11 @@ return {
   {
     events = {
       show = 'smart_workspace_switcher.workspace_switcher.start',
-      hide = 'smart_workspace_switcher.workspace_switcher.finished',
+      hide = {
+        'smart_workspace_switcher.workspace_switcher.canceled',
+        'smart_workspace_switcher.workspace_switcher.chosen',
+        'smart_workspace_switcher.workspace_switcher.created',
+      },
     },
     sections = {
       tabline_a = {
