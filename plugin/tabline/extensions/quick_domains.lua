@@ -4,7 +4,7 @@ return {
   {
     events = {
       show = 'quick_domain.fuzzy_selector.opened',
-      hide = 'quick_domain.fuzzy_selector.canceled',
+      hide = { 'quick_domain.fuzzy_selector.canceled', 'quick_domain.fuzzy_selector.selected' },
     },
     sections = {
       tabline_a = {
