@@ -202,7 +202,7 @@ tabline.get_colors()
 You will get an object like the `color_overrides` object above, but with the addition of a scheme property (the scheme property is the scheme object from WezTerm with every color found there).
 
 > [!TIP]
-> This can be useful when creatting your own components or extensions and you want to use the same colors as the current theme
+> This can be useful when creating your own components or extensions and you want to use the same colors as the current theme
 
 ---
 
