@@ -406,6 +406,8 @@ sections = {
       -- color option to custom color the icon. Example:
       -- { 'workspace', icon = wezterm.nerdfonts.cod_terminal_tmux } / { 'workspace', icon = { wezterm.nerdfonts.cod_terminal_tmux, color = { fg= '#00ff00' } } }
 
+      icons_only = false, -- Only show icon (if the component has one)
+
       -- icon position can also be set to the right side from table. Example:
       -- {'branch', icon = { wezterm.nerdfonts.cod_terminal_tmux, align = 'right', color = { fg = '#00ff00' } } }
       icon = nil,
@@ -453,7 +455,6 @@ sections = {
     -- To use the default icon property set hour_to_icon to nil.
     -- The color and align properties can still be used on the icon property.
     },
-    },
   },
 }
 ```
@@ -479,6 +480,43 @@ sections = {
     {
       'tab_index',
       zero_indexed = false, -- Does the tab index start at 0 or 1
+    },
+  },
+}
+```
+
+#### process component options
+
+```lua
+sections = {
+  tab_active = {
+    {
+      'process',
+      process_to_icon = {
+        ['apt'] = wezterm.nerdfonts.dev_debian,
+        ['bash'] = wezterm.nerdfonts.cod_terminal_bash,
+        ['bat'] = wezterm.nerdfonts.md_bat,
+        ['cmd.exe'] = wezterm.nerdfonts.md_console_line,
+        ['curl'] = wezterm.nerdfonts.md_flattr,
+        ['debug'] = wezterm.nerdfonts.cod_debug,
+        ['default'] = wezterm.nerdfonts.md_application,
+        ['docker'] = wezterm.nerdfonts.linux_docker,
+        ['docker-compose'] = wezterm.nerdfonts.linux_docker,
+        ['git'] = wezterm.nerdfonts.dev_git,
+        ['go'] = wezterm.nerdfonts.md_language_go,
+        ['lazydocker'] = wezterm.nerdfonts.linux_docker,
+        ['lazygit'] = wezterm.nerdfonts.cod_github,
+        ['lua'] = wezterm.nerdfonts.seti_lua,
+        ['make'] = wezterm.nerdfonts.seti_makefile,
+        ['nix'] = wezterm.nerdfonts.linux_nixos,
+        ['node'] = wezterm.nerdfonts.md_nodejs,
+        ['npm'] = wezterm.nerdfonts.md_npm,
+        ['nvim'] = wezterm.nerdfonts.custom_neovim,
+        ['psql'] = wezterm.nerdfonts.dev_postgresql,
+        ['zsh'] = wezterm.nerdfonts.dev_terminal,
+        -- and more...
+      },
+    -- process_to_icon is a table that maps process to icons
     },
   },
 }

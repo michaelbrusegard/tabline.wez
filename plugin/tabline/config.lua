@@ -46,6 +46,7 @@ local default_opts = {
 
 local default_component_opts = {
   icons_enabled = true,
+  icons_only = false,
   padding = 1,
 }
 

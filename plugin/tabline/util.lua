@@ -97,7 +97,7 @@ function M.extract_components(components_opts, attributes, object)
         local opts = M.deep_extend(M.deep_copy(component_opts), v)
         table.remove(opts, 1)
         if result.default_opts then
-          opts = M.deep_extend(result.default_opts, opts)
+          opts = M.deep_extend(M.deep_copy(result.default_opts), opts)
         end
         local component = M.create_component(result.update(object, opts), opts, object, attributes)
         if component then
@@ -123,6 +123,10 @@ function M.create_component(name, opts, object, attributes)
   if opts.fmt then
     name = opts.fmt(name, object)
   end
+  if opts.icon and opts.icons_only then
+    name = ''
+  end
+
   local left_padding_element, right_padding_element
   local left_padding, right_padding
   if opts.padding then
@@ -144,10 +148,10 @@ function M.create_component(name, opts, object, attributes)
         table.insert(icon_name, { Text = name })
         if opts.icon.color then
           if opts.icon.color.fg then
-            table.insert(icon_name, { Foreground = opts.icon.color.fg })
+            table.insert(icon_name, { Foreground = { Color = opts.icon.color.fg } })
           end
           if opts.icon.color.bg then
-            table.insert(icon_name, { Background = opts.icon.color.bg })
+            table.insert(icon_name, { Background = { Color = opts.icon.color.bg } })
           end
         end
         table.insert(icon_name, { Text = ' ' .. opts.icon[1] })
@@ -156,10 +160,10 @@ function M.create_component(name, opts, object, attributes)
       else
         if opts.icon.color then
           if opts.icon.color.fg then
-            table.insert(icon_name, { Foreground = opts.icon.color.fg })
+            table.insert(icon_name, { Foreground = { Color = opts.icon.color.fg } })
           end
           if opts.icon.color.bg then
-            table.insert(icon_name, { Background = opts.icon.color.bg })
+            table.insert(icon_name, { Background = { Color = opts.icon.color.bg } })
           end
         end
         table.insert(icon_name, { Text = opts.icon[1] .. ' ' })
@@ -180,10 +184,10 @@ function M.create_component(name, opts, object, attributes)
 end
 
 function M.overwrite_icon(opts, new_icon)
-  if type(opts.icon) == 'table' then
-    opts.icon[1] = new_icon
+  if type(new_icon) == 'table' and type(opts.icon) == 'table' then
+    opts.icon[1] = M.deep_copy(new_icon[1])
   else
-    opts.icon = new_icon
+    opts.icon = M.deep_copy(new_icon)
   end
 end
 
