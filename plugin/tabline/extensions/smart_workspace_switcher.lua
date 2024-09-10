@@ -14,6 +14,7 @@ return {
       tabline_a = {
         ' Switch Workspace ',
       },
+      tabline_b = { 'workspace' },
       tabline_c = {},
       tab_active = {},
       tab_inactive = {},
