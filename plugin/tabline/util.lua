@@ -123,6 +123,10 @@ function M.create_component(name, opts, object, attributes)
   if opts.fmt then
     name = opts.fmt(name, object)
   end
+  if opts.icon and opts.icons_only then
+    name = ''
+  end
+
   local left_padding_element, right_padding_element
   local left_padding, right_padding
   if opts.padding then
@@ -180,6 +184,7 @@ function M.create_component(name, opts, object, attributes)
 end
 
 function M.overwrite_icon(opts, new_icon)
+  new_icon = new_icon or nil
   if type(opts.icon) == 'table' then
     opts.icon[1] = new_icon
   else
