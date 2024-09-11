@@ -125,6 +125,7 @@ end
 
 function M.set(user_opts)
   user_opts = user_opts or { options = {} }
+  user_opts.options = user_opts.options or {}
   local color_overrides = user_opts.options.color_overrides or {}
   user_opts.options.color_overrides = nil
 
