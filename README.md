@@ -259,6 +259,7 @@ Tabline separates components into ones available for the tabline components (`ta
 And the `tab_active` and `tab_inactive` components which are grouped under Tab and have access to [TabInformation](https://wezfurlong.org/wezterm/config/lua/TabInformation.html).
 
 - Window
+  - `mode` (current keytable)
   - `battery` (battery percentage)
   - `cpu` (cpu percentage)
   - `datetime` (current date and time)
