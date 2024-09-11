@@ -541,7 +541,7 @@ sections = {
 ```lua
 sections = {
   battery_to_icon = {
-    empty = wezterm.nerdfonts.fa_battery_empty,
+    empty = { wezterm.nerdfonts.fa_battery_empty, color = { fg = scheme.ansi[2] } },
     quarter = wezterm.nerdfonts.fa_battery_quarter,
     half = wezterm.nerdfonts.fa_battery_half,
     three_quarters = wezterm.nerdfonts.fa_battery_three_quarters,
