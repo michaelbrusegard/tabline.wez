@@ -91,7 +91,7 @@ local function right_section()
   if #tabline_z > 0 and #tabline_y > 0 then
     util.insert_elements(result, section_seperator_attributes_a)
     table.insert(result, right_section_separator)
-  elseif #tabline_z > 0 and #tabline_x > 0 then
+  elseif #tabline_z > 0 then
     util.insert_elements(result, section_seperator_attributes_c)
     table.insert(result, right_section_separator)
   end
@@ -111,7 +111,7 @@ local function left_section()
   if #tabline_a > 0 and #tabline_b > 0 then
     util.insert_elements(result, section_seperator_attributes_a)
     table.insert(result, left_section_separator)
-  elseif #tabline_a > 0 and #tabline_c > 0 then
+  elseif #tabline_a > 0 then
     util.insert_elements(result, section_seperator_attributes_c)
     table.insert(result, left_section_separator)
   end
