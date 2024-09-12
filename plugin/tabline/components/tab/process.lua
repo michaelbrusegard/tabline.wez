@@ -7,7 +7,7 @@ local foreground_process_name = ''
 return {
   default_opts = {
     process_to_icon = {
-      ['air'] = wezterm.nerdfonts.md_language_go, color = { fg = scheme.brights[5] },
+      ['air'] = { wezterm.nerdfonts.md_language_go, color = { fg = scheme.brights[5] } },
       ['apt'] = { wezterm.nerdfonts.dev_debian, color = { fg = scheme.ansi[2] } },
       ['bacon'] = { wezterm.nerdfonts.dev_rust, color = { fg = scheme.ansi[2] } },
       ['bash'] = { wezterm.nerdfonts.cod_terminal_bash, color = { fg = scheme.cursor_bg or nil } },
