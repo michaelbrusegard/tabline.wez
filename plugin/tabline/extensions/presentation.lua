@@ -14,9 +14,9 @@ return {
       tabline_b = { 'workspace' },
 
       -- Clear for a focused presentation.
-      tabline_c = { '' },
-      tabline_x = { '' },
-      tabline_y = { '' },
+      tabline_c = {},
+      tabline_x = {},
+      tabline_y = {},
       tabline_z = { 'datetime' },
       tab_active = {},
       tab_inactive = {},
