@@ -10,6 +10,7 @@ local function correct_window(window)
       window = window:gui_window()
     end
   end
+  return window
 end
 
 local function set_attributes(sections, colors, window)
@@ -22,7 +23,7 @@ end
 
 local function on_show_event(event, events, sections, colors)
   wezterm.on(event, function(window, ...)
-    correct_window(window)
+    window = correct_window(window)
     set_attributes(sections, colors, window)
     if not events.hide then
       wezterm.time.call_after(events.delay or 5, function()
@@ -37,7 +38,7 @@ end
 
 local function on_hide_event(event, events)
   wezterm.on(event, function(window)
-    correct_window(window)
+    window = correct_window(window)
     if events.delay then
       wezterm.time.call_after(events.delay, function()
         set_attributes(config.opts.sections, config.normal_mode_colors, window)
