@@ -81,7 +81,7 @@ function M.extract_components(components_opts, attributes, object)
         if ok then
           local opts = M.deep_copy(component_opts)
           if result.default_opts then
-            opts = M.deep_extend(result.default_opts, opts)
+            opts = M.deep_extend(opts, result.default_opts)
           end
           local component = M.create_component(result.update(object, opts), opts, object, attributes)
           if component then
@@ -94,11 +94,12 @@ function M.extract_components(components_opts, attributes, object)
     elseif type(v) == 'table' and type(v[1]) == 'string' then
       local ok, result = pcall(require, require_component(object, v[1]))
       if ok then
-        local opts = M.deep_extend(M.deep_copy(component_opts), v)
-        table.remove(opts, 1)
+        local opts = M.deep_copy(component_opts)
         if result.default_opts then
-          opts = M.deep_extend(M.deep_copy(result.default_opts), opts)
+          opts = M.deep_extend(opts, result.default_opts)
         end
+        opts = M.deep_extend(opts, v)
+        table.remove(opts, 1)
         local component = M.create_component(result.update(object, opts), opts, object, attributes)
         if component then
           table.insert(components, component)
