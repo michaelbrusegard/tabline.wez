@@ -83,13 +83,13 @@ tabline.setup({
     tabline_b = { 'workspace' },
     tabline_c = { ' ' },
     tab_active = {
-      'tab_index',
+      'index',
       { 'parent', padding = 0 },
       '/',
       { 'cwd', padding = { left = 0, right = 1 } },
       { 'zoomed', padding = 0 },
     },
-    tab_inactive = { 'tab_index', { 'process', padding = { left = 0, right = 1 } } },
+    tab_inactive = { 'index', { 'process', padding = { left = 0, right = 1 } } },
     tabline_x = { 'ram', 'cpu' },
     tabline_y = { 'datetime', 'battery' },
     tabline_z = { 'hostname' },
@@ -268,10 +268,11 @@ And the `tab_active` and `tab_inactive` components which are grouped under Tab a
   - `window` (window title)
   - `workspace` (active wezterm workspace)
 - Tab
+  - `tab` (tab title)
   - `cwd` (current working directory)
   - `parent` (parent directory)
   - `process` (process name)
-  - `tab_index` (tab index)
+  - `index` (tab index)
   - `zoomed` (indicator if tab has zoomed pane)
 
 #### Custom components
@@ -433,7 +434,7 @@ sections = {
 #### Component specific options
 
 These are options that are available on specific components.
-For example, you have option on `tab_index` component to
+For example, you have option on `index` component to
 specify if it should be zero indexed.
 
 #### datetime component options
@@ -473,13 +474,13 @@ sections = {
 }
 ```
 
-#### tab_index component options
+#### index component options
 
 ```lua
 sections = {
   tab_active = {
     {
-      'tab_index',
+      'index',
       zero_indexed = false, -- Does the tab index start at 0 or 1
     },
   },
