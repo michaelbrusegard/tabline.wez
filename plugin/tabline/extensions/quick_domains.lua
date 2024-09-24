@@ -5,7 +5,12 @@ return {
     'quick_domains',
     events = {
       show = 'quick_domain.fuzzy_selector.opened',
-      hide = { 'quick_domain.fuzzy_selector.canceled', 'quick_domain.fuzzy_selector.selected' },
+      hide = {
+        'quick_domain.fuzzy_selector.canceled',
+        'quick_domain.fuzzy_selector.selected',
+        'resurrect.fuzzy_load.start',
+        'smart_workspace_switcher.workspace_switcher.start',
+      },
     },
     sections = {
       tabline_a = {

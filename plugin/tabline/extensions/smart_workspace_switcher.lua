@@ -9,6 +9,8 @@ return {
         'smart_workspace_switcher.workspace_switcher.canceled',
         'smart_workspace_switcher.workspace_switcher.chosen',
         'smart_workspace_switcher.workspace_switcher.created',
+        'resurrect.fuzzy_load.start',
+        'quick_domain.fuzzy_selector.opened',
       },
     },
     sections = {

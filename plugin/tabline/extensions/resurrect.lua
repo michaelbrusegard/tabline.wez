@@ -6,7 +6,11 @@ return {
     'resurrect',
     events = {
       show = 'resurrect.fuzzy_load.start',
-      hide = 'resurrect.fuzzy_load.finished',
+      hide = {
+        'resurrect.fuzzy_load.finished',
+        'quick_domain.fuzzy_selector.opened',
+        'smart_workspace_switcher.workspace_switcher.start',
+      },
     },
     sections = {
       tabline_a = {
