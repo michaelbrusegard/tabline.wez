@@ -1,5 +1,6 @@
 local config = require('tabline.config')
 local util = require('tabline.util')
+local extension = require('tabline.extension')
 
 local M = {}
 
@@ -10,27 +11,39 @@ local active_attributes, inactive_attributes, active_separator_attributes, inact
 local tab_active, tab_inactive = {}, {}
 
 local function create_attributes(hover)
+  local colors = config.colors.tab
+  for _, ext in pairs(extension.extensions) do
+    if ext.colors and ext.colors.tab then
+      colors = util.deep_extend(util.deep_copy(colors), ext.colors.tab)
+    end
+  end
   active_attributes = {
-    { Foreground = { Color = config.colors.tab.active.fg } },
-    { Background = { Color = config.colors.tab.active.bg } },
+    { Foreground = { Color = colors.active.fg } },
+    { Background = { Color = colors.active.bg } },
   }
   inactive_attributes = {
-    { Foreground = { Color = hover and config.colors.tab.inactive_hover.fg or config.colors.tab.inactive.fg } },
-    { Background = { Color = hover and config.colors.tab.inactive_hover.bg or config.colors.tab.inactive.bg } },
+    { Foreground = { Color = hover and colors.inactive_hover.fg or colors.inactive.fg } },
+    { Background = { Color = hover and colors.inactive_hover.bg or colors.inactive.bg } },
   }
   active_separator_attributes = {
-    { Foreground = { Color = config.colors.tab.active.bg } },
-    { Background = { Color = config.colors.tab.inactive.bg } },
+    { Foreground = { Color = colors.active.bg } },
+    { Background = { Color = colors.inactive.bg } },
   }
   inactive_separator_attributes = {
-    { Foreground = { Color = hover and config.colors.tab.inactive_hover.bg or config.colors.tab.inactive.bg } },
-    { Background = { Color = config.colors.tab.inactive.bg } },
+    { Foreground = { Color = hover and colors.inactive_hover.bg or colors.inactive.bg } },
+    { Background = { Color = colors.inactive.bg } },
   }
 end
 
 local function create_tab_content(tab)
-  tab_active = util.extract_components(config.sections.tab_active, active_attributes, tab)
-  tab_inactive = util.extract_components(config.sections.tab_inactive, inactive_attributes, tab)
+  local sections = config.sections
+  for _, ext in pairs(extension.extensions) do
+    if ext.sections then
+      sections = util.deep_extend(util.deep_copy(sections), ext.sections)
+    end
+  end
+  tab_active = util.extract_components(sections.tab_active, active_attributes, tab)
+  tab_inactive = util.extract_components(sections.tab_inactive, inactive_attributes, tab)
 end
 
 local function tabs(tab)

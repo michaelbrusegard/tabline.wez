@@ -1,6 +1,7 @@
 local wezterm = require('wezterm')
 local util = require('tabline.util')
 local config = require('tabline.config')
+local extension = require('tabline.extension')
 
 local M = {}
 
@@ -20,57 +21,63 @@ local tabline_a, tabline_b, tabline_c, tabline_x, tabline_y, tabline_z = {}, {},
 
 local function create_attributes(window)
   local mode = window:active_key_table() or 'normal_mode'
+  local colors = config.colors[mode]
+  for _, ext in pairs(extension.extensions) do
+    if ext.colors then
+      colors = util.deep_extend(util.deep_copy(colors), ext.colors)
+    end
+  end
   attributes_a = {
-    { Foreground = { Color = config.colors[mode].a.fg } },
-    { Background = { Color = config.colors[mode].a.bg } },
+    { Foreground = { Color = colors.a.fg } },
+    { Background = { Color = colors.a.bg } },
     { Attribute = { Intensity = 'Bold' } },
   }
   attributes_b = {
-    { Foreground = { Color = config.colors[mode].b.fg } },
-    { Background = { Color = config.colors[mode].b.bg } },
+    { Foreground = { Color = colors.b.fg } },
+    { Background = { Color = colors.b.bg } },
     { Attribute = { Intensity = 'Normal' } },
   }
   attributes_c = {
-    { Foreground = { Color = config.colors[mode].c.fg } },
-    { Background = { Color = config.colors[mode].c.bg } },
+    { Foreground = { Color = colors.c.fg } },
+    { Background = { Color = colors.c.bg } },
   }
   attributes_x = {
-    { Foreground = { Color = config.colors[mode].x and config.colors[mode].x.fg or config.colors[mode].c.fg } },
-    { Background = { Color = config.colors[mode].x and config.colors[mode].x.bg or config.colors[mode].c.bg } },
+    { Foreground = { Color = colors.x and colors.x.fg or colors.c.fg } },
+    { Background = { Color = colors.x and colors.x.bg or colors.c.bg } },
   }
   attributes_y = {
-    { Foreground = { Color = config.colors[mode].y and config.colors[mode].y.fg or config.colors[mode].b.fg } },
-    { Background = { Color = config.colors[mode].y and config.colors[mode].y.bg or config.colors[mode].b.bg } },
+    { Foreground = { Color = colors.y and colors.y.fg or colors.b.fg } },
+    { Background = { Color = colors.y and colors.y.bg or colors.b.bg } },
     { Attribute = { Intensity = 'Normal' } },
   }
   attributes_z = {
-    { Foreground = { Color = config.colors[mode].z and config.colors[mode].z.fg or config.colors[mode].a.fg } },
-    { Background = { Color = config.colors[mode].z and config.colors[mode].z.bg or config.colors[mode].a.bg } },
+    { Foreground = { Color = colors.z and colors.z.fg or colors.a.fg } },
+    { Background = { Color = colors.z and colors.z.bg or colors.a.bg } },
     { Attribute = { Intensity = 'Bold' } },
   }
   section_seperator_attributes_a = {
-    { Foreground = { Color = config.colors[mode].a.bg } },
-    { Background = { Color = config.colors[mode].b.bg } },
+    { Foreground = { Color = colors.a.bg } },
+    { Background = { Color = colors.b.bg } },
   }
   section_seperator_attributes_b = {
-    { Foreground = { Color = config.colors[mode].b.bg } },
-    { Background = { Color = config.colors[mode].c.bg } },
+    { Foreground = { Color = colors.b.bg } },
+    { Background = { Color = colors.c.bg } },
   }
   section_seperator_attributes_c = {
-    { Foreground = { Color = config.colors[mode].a.bg } },
-    { Background = { Color = config.colors[mode].c.bg } },
+    { Foreground = { Color = colors.a.bg } },
+    { Background = { Color = colors.c.bg } },
   }
   section_seperator_attributes_x = {
-    { Foreground = { Color = config.colors[mode].z and config.colors[mode].z.bg or config.colors[mode].a.bg } },
-    { Background = { Color = config.colors[mode].x and config.colors[mode].x.bg or config.colors[mode].c.bg } },
+    { Foreground = { Color = colors.z and colors.z.bg or colors.a.bg } },
+    { Background = { Color = colors.x and colors.x.bg or colors.c.bg } },
   }
   section_seperator_attributes_y = {
-    { Foreground = { Color = config.colors[mode].y and config.colors[mode].y.bg or config.colors[mode].b.bg } },
-    { Background = { Color = config.colors[mode].x and config.colors[mode].x.bg or config.colors[mode].c.bg } },
+    { Foreground = { Color = colors.y and colors.y.bg or colors.b.bg } },
+    { Background = { Color = colors.x and colors.x.bg or colors.c.bg } },
   }
   section_seperator_attributes_z = {
-    { Foreground = { Color = config.colors[mode].z and config.colors[mode].z.bg or config.colors[mode].a.bg } },
-    { Background = { Color = config.colors[mode].y and config.colors[mode].y.bg or config.colors[mode].b.bg } },
+    { Foreground = { Color = colors.z and colors.z.bg or colors.a.bg } },
+    { Background = { Color = colors.y and colors.y.bg or colors.b.bg } },
   }
 end
 
@@ -87,18 +94,18 @@ local function insert_component_separators(components, is_left)
 end
 
 local function create_sections(window)
-  tabline_a =
-    insert_component_separators(util.extract_components(config.sections.tabline_a, attributes_a, window), true)
-  tabline_b =
-    insert_component_separators(util.extract_components(config.sections.tabline_b, attributes_b, window), true)
-  tabline_c =
-    insert_component_separators(util.extract_components(config.sections.tabline_c, attributes_c, window), true)
-  tabline_x =
-    insert_component_separators(util.extract_components(config.sections.tabline_x, attributes_x, window), false)
-  tabline_y =
-    insert_component_separators(util.extract_components(config.sections.tabline_y, attributes_y, window), false)
-  tabline_z =
-    insert_component_separators(util.extract_components(config.sections.tabline_z, attributes_z, window), false)
+  local sections = config.sections
+  for _, ext in pairs(extension.extensions) do
+    if ext.sections then
+      sections = util.deep_extend(util.deep_copy(sections), ext.sections)
+    end
+  end
+  tabline_a = insert_component_separators(util.extract_components(sections.tabline_a, attributes_a, window), true)
+  tabline_b = insert_component_separators(util.extract_components(sections.tabline_b, attributes_b, window), true)
+  tabline_c = insert_component_separators(util.extract_components(sections.tabline_c, attributes_c, window), true)
+  tabline_x = insert_component_separators(util.extract_components(sections.tabline_x, attributes_x, window), false)
+  tabline_y = insert_component_separators(util.extract_components(sections.tabline_y, attributes_y, window), false)
+  tabline_z = insert_component_separators(util.extract_components(sections.tabline_z, attributes_z, window), false)
 end
 
 local function right_section()

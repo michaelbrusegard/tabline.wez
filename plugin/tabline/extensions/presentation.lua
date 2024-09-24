@@ -3,6 +3,7 @@ local config = require('tabline.config')
 
 return {
   {
+    'presentation',
     events = {
       show = 'xarvex.presentation.activate',
       hide = 'xarvex.presentation.deactivate',
