@@ -13,8 +13,9 @@ local left_component_separator =
 local right_component_separator =
   { Text = config.opts.options.component_separators.right or config.opts.options.component_separators }
 
-local attributes_a, attributes_b, attributes_c = {}, {}, {}
-local section_seperator_attributes_a, section_seperator_attributes_b, section_seperator_attributes_c = {}, {}, {}
+local attributes_a, attributes_b, attributes_c, attributes_x, attributes_y, attributes_z = {}, {}, {}, {}, {}, {}
+local section_seperator_attributes_a, section_seperator_attributes_b, section_seperator_attributes_c, section_seperator_attributes_x, section_seperator_attributes_y, section_seperator_attributes_z =
+  {}, {}, {}, {}, {}, {}
 local tabline_a, tabline_b, tabline_c, tabline_x, tabline_y, tabline_z = {}, {}, {}, {}, {}, {}
 
 local function create_attributes(window)
@@ -33,6 +34,20 @@ local function create_attributes(window)
     { Foreground = { Color = config.colors[mode].c.fg } },
     { Background = { Color = config.colors[mode].c.bg } },
   }
+  attributes_x = {
+    { Foreground = { Color = config.colors[mode].x and config.colors[mode].x.fg or config.colors[mode].c.fg } },
+    { Background = { Color = config.colors[mode].x and config.colors[mode].x.bg or config.colors[mode].c.bg } },
+  }
+  attributes_y = {
+    { Foreground = { Color = config.colors[mode].y and config.colors[mode].y.fg or config.colors[mode].b.fg } },
+    { Background = { Color = config.colors[mode].y and config.colors[mode].y.bg or config.colors[mode].b.bg } },
+    { Attribute = { Intensity = 'Normal' } },
+  }
+  attributes_z = {
+    { Foreground = { Color = config.colors[mode].z and config.colors[mode].z.fg or config.colors[mode].a.fg } },
+    { Background = { Color = config.colors[mode].z and config.colors[mode].z.bg or config.colors[mode].a.bg } },
+    { Attribute = { Intensity = 'Bold' } },
+  }
   section_seperator_attributes_a = {
     { Foreground = { Color = config.colors[mode].a.bg } },
     { Background = { Color = config.colors[mode].b.bg } },
@@ -44,6 +59,18 @@ local function create_attributes(window)
   section_seperator_attributes_c = {
     { Foreground = { Color = config.colors[mode].a.bg } },
     { Background = { Color = config.colors[mode].c.bg } },
+  }
+  section_seperator_attributes_x = {
+    { Foreground = { Color = config.colors[mode].z and config.colors[mode].z.bg or config.colors[mode].a.bg } },
+    { Background = { Color = config.colors[mode].x and config.colors[mode].x.bg or config.colors[mode].c.bg } },
+  }
+  section_seperator_attributes_y = {
+    { Foreground = { Color = config.colors[mode].y and config.colors[mode].y.bg or config.colors[mode].b.bg } },
+    { Background = { Color = config.colors[mode].x and config.colors[mode].x.bg or config.colors[mode].c.bg } },
+  }
+  section_seperator_attributes_z = {
+    { Foreground = { Color = config.colors[mode].z and config.colors[mode].z.bg or config.colors[mode].a.bg } },
+    { Background = { Color = config.colors[mode].y and config.colors[mode].y.bg or config.colors[mode].b.bg } },
   }
 end
 
@@ -67,36 +94,36 @@ local function create_sections(window)
   tabline_c =
     insert_component_separators(util.extract_components(config.sections.tabline_c, attributes_c, window), true)
   tabline_x =
-    insert_component_separators(util.extract_components(config.sections.tabline_x, attributes_c, window), false)
+    insert_component_separators(util.extract_components(config.sections.tabline_x, attributes_x, window), false)
   tabline_y =
-    insert_component_separators(util.extract_components(config.sections.tabline_y, attributes_b, window), false)
+    insert_component_separators(util.extract_components(config.sections.tabline_y, attributes_y, window), false)
   tabline_z =
-    insert_component_separators(util.extract_components(config.sections.tabline_z, attributes_a, window), false)
+    insert_component_separators(util.extract_components(config.sections.tabline_z, attributes_z, window), false)
 end
 
 local function right_section()
   local result = {}
   if #tabline_x > 0 then
-    util.insert_elements(result, attributes_c)
+    util.insert_elements(result, attributes_x)
     util.insert_elements(result, tabline_x)
   end
   if #tabline_y > 0 then
-    util.insert_elements(result, section_seperator_attributes_b)
+    util.insert_elements(result, section_seperator_attributes_y)
     table.insert(result, right_section_separator)
   end
   if #tabline_y > 0 then
-    util.insert_elements(result, attributes_b)
+    util.insert_elements(result, attributes_y)
     util.insert_elements(result, tabline_y)
   end
   if #tabline_z > 0 and #tabline_y > 0 then
-    util.insert_elements(result, section_seperator_attributes_a)
+    util.insert_elements(result, section_seperator_attributes_z)
     table.insert(result, right_section_separator)
   elseif #tabline_z > 0 then
-    util.insert_elements(result, section_seperator_attributes_c)
+    util.insert_elements(result, section_seperator_attributes_x)
     table.insert(result, right_section_separator)
   end
   if #tabline_z > 0 then
-    util.insert_elements(result, attributes_a)
+    util.insert_elements(result, attributes_z)
     util.insert_elements(result, tabline_z)
   end
   return result
