@@ -42,7 +42,7 @@ function M.setup(opts)
     return require('tabline.tabs').set_title(tab, hover)
   end)
 
-  -- require('tabline.extension').load()
+  require('tabline.extension').load()
 end
 
 function M.apply_to_config(config)

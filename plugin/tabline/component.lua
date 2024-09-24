@@ -22,6 +22,11 @@ local tabline_a, tabline_b, tabline_c, tabline_x, tabline_y, tabline_z = {}, {},
 local function create_attributes(window)
   local mode = window:active_key_table() or 'normal_mode'
   local colors = config.colors[mode]
+  for _, ext in pairs(extension.extensions) do
+    if ext.colors then
+      colors = util.deep_extend(util.deep_copy(colors), ext.colors)
+    end
+  end
   attributes_a = {
     { Foreground = { Color = colors.a.fg } },
     { Background = { Color = colors.a.bg } },
@@ -90,6 +95,11 @@ end
 
 local function create_sections(window)
   local sections = config.sections
+  for _, ext in pairs(extension.extensions) do
+    if ext.sections then
+      sections = util.deep_extend(util.deep_copy(sections), ext.sections)
+    end
+  end
   tabline_a = insert_component_separators(util.extract_components(sections.tabline_a, attributes_a, window), true)
   tabline_b = insert_component_separators(util.extract_components(sections.tabline_b, attributes_b, window), true)
   tabline_c = insert_component_separators(util.extract_components(sections.tabline_c, attributes_c, window), true)
