@@ -3,6 +3,7 @@ local config = require('tabline.config')
 
 return {
   {
+    'resurrect',
     events = {
       show = 'resurrect.fuzzy_load.start',
       hide = 'resurrect.fuzzy_load.finished',
@@ -22,6 +23,7 @@ return {
     },
   },
   {
+    'resurrect.periodic_save',
     events = {
       show = 'resurrect.periodic_save',
       delay = 7,

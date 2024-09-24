@@ -2,6 +2,7 @@ local config = require('tabline.config')
 
 return {
   {
+    'smart_workspace_switcher',
     events = {
       show = 'smart_workspace_switcher.workspace_switcher.start',
       hide = {

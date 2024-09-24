@@ -587,6 +587,7 @@ The `colors` overwrite the default colors for the extension to use with its `sec
 
 ```lua
 local my_extension = {
+  'my_extension_name',
   events = {
     show = 'my_plugin.show',
     hide = 'my_plugin.hide',

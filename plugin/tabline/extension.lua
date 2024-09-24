@@ -1,8 +1,9 @@
 local wezterm = require('wezterm')
-local util = require('tabline.util')
 local config = require('tabline.config')
 
 local M = {}
+
+M.extensions = {}
 
 local function correct_window(window)
   if window then
@@ -13,61 +14,80 @@ local function correct_window(window)
   return window
 end
 
-local function set_attributes(sections, colors, window)
-  config.sections = sections
-  config.colors.normal_mode = colors
+local function refresh_tabline(window)
   if window and window.window_id then
     require('tabline.component').set_status(window)
   end
 end
 
-local function on_show_event(event, events, sections, colors)
+local function add_extension(extension)
+  local exists = false
+  for _, ext in ipairs(M.extensions) do
+    if ext[1] == extension[1] then
+      exists = true
+      break
+    end
+  end
+  if not exists then
+    table.insert(M.extensions, extension)
+  end
+end
+
+local function remove_extension(extension)
+  for i, ext in ipairs(M.extensions) do
+    if ext[1] == extension[1] then
+      table.remove(M.extensions, i)
+      break
+    end
+  end
+end
+
+local function on_show_event(event, extension)
   wezterm.on(event, function(window, ...)
     window = correct_window(window)
-    set_attributes(sections, colors, window)
-    if not events.hide then
-      wezterm.time.call_after(events.delay or 5, function()
-        set_attributes(config.opts.sections, config.normal_mode_colors, window)
+    add_extension(extension)
+    refresh_tabline(window)
+    if not extension.events.hide then
+      wezterm.time.call_after(extension.events.delay or 5, function()
+        remove_extension(extension)
+        refresh_tabline(window)
       end)
     end
-    if events.callback then
-      events.callback(window, ...)
+    if extension.events.callback then
+      extension.events.callback(window, ...)
     end
   end)
 end
 
-local function on_hide_event(event, events)
+local function on_hide_event(event, extension)
   wezterm.on(event, function(window)
     window = correct_window(window)
-    if events.delay then
-      wezterm.time.call_after(events.delay, function()
-        set_attributes(config.opts.sections, config.normal_mode_colors, window)
+    if extension.events.delay then
+      wezterm.time.call_after(extension.events.delay, function()
+        remove_extension(extension)
+        refresh_tabline(window)
       end)
     else
-      set_attributes(config.opts.sections, config.normal_mode_colors, window)
+      remove_extension(extension)
+      refresh_tabline(window)
     end
   end)
 end
 
 local function setup_extension(extension)
-  local sections = util.deep_extend(util.deep_copy(config.opts.sections), extension.sections or {})
-  local colors = util.deep_extend(util.deep_copy(config.normal_mode_colors), extension.colors or {})
-  local events = extension.events
-  if sections and events then
-    if type(events.show) == 'string' then
-      on_show_event(events.show, events, sections, colors)
-    else
-      for _, event in ipairs(events.show) do
-        on_show_event(event, events, sections, colors)
-      end
+  if type(extension.events.show) == 'string' then
+    on_show_event(extension.events.show, extension)
+  else
+    for _, event in ipairs(extension.events.show) do
+      on_show_event(event, extension)
     end
-    if events.hide then
-      if type(events.hide) == 'string' then
-        on_hide_event(events.hide, events)
-      elseif type(events.hide) == 'table' then
-        for _, event in ipairs(events.hide) do
-          on_hide_event(event, events)
-        end
+  end
+  if extension.events.hide then
+    if type(extension.events.hide) == 'string' then
+      on_hide_event(extension.events.hide, extension)
+    elseif type(extension.events.hide) == 'table' then
+      for _, event in ipairs(extension.events.hide) do
+        on_hide_event(event, extension)
       end
     end
   end
