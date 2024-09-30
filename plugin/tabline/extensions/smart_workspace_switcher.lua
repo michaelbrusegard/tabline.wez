@@ -10,6 +10,7 @@ return {
         'smart_workspace_switcher.workspace_switcher.chosen',
         'smart_workspace_switcher.workspace_switcher.created',
         'resurrect.fuzzy_load.start',
+        'resurrect.fuzzy_load.finished',
         'quick_domain.fuzzy_selector.opened',
       },
     },
