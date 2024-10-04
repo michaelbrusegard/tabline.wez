@@ -2,6 +2,7 @@ local wezterm = require('wezterm')
 local util = require('tabline.util')
 local config = require('tabline.config')
 local extension = require('tabline.extension')
+local mode = require('tabline.components.window.mode')
 
 local M = {}
 
@@ -20,8 +21,8 @@ local section_seperator_attributes_a, section_seperator_attributes_b, section_se
 local tabline_a, tabline_b, tabline_c, tabline_x, tabline_y, tabline_z = {}, {}, {}, {}, {}, {}
 
 local function create_attributes(window)
-  local mode = window:active_key_table() or 'normal_mode'
-  local colors = config.colors[mode]
+  local current_mode = mode.get(window)
+  local colors = config.colors[current_mode]
   for _, ext in pairs(extension.extensions) do
     if ext.colors then
       colors = util.deep_extend(util.deep_copy(colors), ext.colors)
