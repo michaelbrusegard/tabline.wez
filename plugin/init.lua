@@ -3,7 +3,7 @@ local wezterm = require('wezterm')
 local M = {}
 
 --- Checks if the user is on windows
-local is_windows = wezterm.target_triple == 'x86_64-pc-windows-msvc'
+local is_windows = string.match(wezterm.target_triple, 'windows') ~= nil
 local separator = is_windows and '\\' or '/'
 
 local plugin_dir = wezterm.plugin.list()[1].plugin_dir:gsub(separator .. '[^' .. separator .. ']*$', '')
