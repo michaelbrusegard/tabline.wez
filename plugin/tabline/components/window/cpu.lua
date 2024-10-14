@@ -14,19 +14,19 @@ return {
       return last_result
     end
     local success, result
-    if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+    if string.match(wezterm.target_triple, 'windows') ~= nil then
       success, result = wezterm.run_child_process {
         'cmd.exe',
         '/C',
         'wmic cpu get loadpercentage',
       }
-    elseif wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
+    elseif string.match(wezterm.target_triple, 'linux') ~= nil then
       success, result = wezterm.run_child_process {
         'bash',
         '-c',
         "awk '/^cpu / {print ($2+$4)*100/($2+$4+$5)}' /proc/stat",
       }
-    elseif wezterm.target_triple == 'x86_64-apple-darwin' or wezterm.target_triple == 'aarch64-apple-darwin' then
+    elseif string.match(wezterm.target_triple, 'darwin') ~= nil then
       success, result = wezterm.run_child_process {
         'bash',
         '-c',
@@ -39,13 +39,13 @@ return {
     end
 
     local cpu
-    if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
-      cpu = result:match("%d+")
+    if string.match(wezterm.target_triple, 'windows') ~= nil then
+      cpu = result:match('%d+')
     else
       cpu = result:gsub('^%s*(.-)%s*$', '%1')
     end
 
-    if wezterm.target_triple == '-86_64-apple-darwin' or wezterm.target_triple == 'aarch64-apple-darwin' then
+    if string.match(wezterm.target_triple, 'darwin') ~= nil then
       success, result = wezterm.run_child_process {
         'sysctl',
         '-n',
