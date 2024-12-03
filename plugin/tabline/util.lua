@@ -68,7 +68,7 @@ local function require_component(object, v)
   return component
 end
 
-function M.extract_components(components_opts, attributes, object)
+function M.extract_components(components_opts, attributes, object, format)
   local component_opts = require('tabline.config').component_opts
   local components = {}
   for _, v in ipairs(components_opts) do
@@ -83,9 +83,9 @@ function M.extract_components(components_opts, attributes, object)
           if result.default_opts then
             opts = M.deep_extend(opts, result.default_opts)
           end
-          local component = M.create_component(result.update(object, opts), opts, object, attributes)
+          local component = M.create_component(result.update(object, opts), opts, object, attributes, format)
           if component then
-            table.insert(components, component)
+            M.insert_elements(components, component)
           end
         else
           table.insert(components, { Text = v .. '' })
@@ -100,9 +100,9 @@ function M.extract_components(components_opts, attributes, object)
         end
         opts = M.deep_extend(opts, v)
         table.remove(opts, 1)
-        local component = M.create_component(result.update(object, opts), opts, object, attributes)
+        local component = M.create_component(result.update(object, opts), opts, object, attributes, format)
         if component then
-          table.insert(components, component)
+          M.insert_elements(components, component)
         end
       end
     elseif type(v) == 'function' then
@@ -114,7 +114,7 @@ function M.extract_components(components_opts, attributes, object)
   return components
 end
 
-function M.create_component(name, opts, object, attributes)
+function M.create_component(name, opts, object, attributes, format)
   if name == nil then
     return
   end
@@ -128,6 +128,7 @@ function M.create_component(name, opts, object, attributes)
     name = ''
   end
 
+  local result
   local left_padding_element, right_padding_element
   local left_padding, right_padding
   if opts.padding then
@@ -177,11 +178,14 @@ function M.create_component(name, opts, object, attributes)
       table.insert(icon_name, { Text = name })
     end
     table.insert(icon_name, right_padding_element)
-    name = wezterm.format(icon_name)
+    result = icon_name
+    if format then
+      result = { { Text = wezterm.format(icon_name) } }
+    end
   else
-    name = left_padding .. name .. right_padding
+    result = { { Text = left_padding .. name .. right_padding } }
   end
-  return { Text = name }
+  return result
 end
 
 function M.overwrite_icon(opts, new_icon)
