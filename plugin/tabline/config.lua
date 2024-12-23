@@ -39,7 +39,7 @@ local default_opts = {
     tab_inactive = { 'index', { 'process', padding = { left = 0, right = 1 } } },
     tabline_x = { 'ram', 'cpu' },
     tabline_y = { 'datetime', 'battery' },
-    tabline_z = { 'hostname' },
+    tabline_z = { 'domain' },
   },
   extensions = {},
 }
