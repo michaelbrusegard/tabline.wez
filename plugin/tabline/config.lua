@@ -11,6 +11,7 @@ M.colors = {}
 local default_opts = {
   options = {
     theme = 'Catppuccin Mocha',
+    tabs_enabled = true,
     section_separators = {
       left = wezterm.nerdfonts.pl_left_hard_divider,
       right = wezterm.nerdfonts.pl_right_hard_divider,

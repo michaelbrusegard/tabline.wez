@@ -68,6 +68,9 @@ local function tabs(tab)
 end
 
 M.set_title = function(tab, hover)
+  if not config.opts.options.tabs_enabled then
+    return
+  end
   create_attributes(hover)
   create_tab_content(tab)
   return tabs(tab)
