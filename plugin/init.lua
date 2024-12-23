@@ -16,9 +16,29 @@ end
 
 --- Returns the name of the package, used when requiring modules
 local function get_require_path()
-  local path1 = 'httpssCssZssZsgithubsDscomsZsmichaelbrusegardsZstablinesDswez'
-  local path2 = 'httpssCssZssZsgithubsDscomsZsmichaelbrusegardsZstablinesDswezsZs'
-  return directory_exists(path2) and path2 or path1
+  -- HTTPS version
+  local https_path = 'httpssCssZssZsgithubsDscomsZsmichaelbrusegardsZstablinesDswez'
+  local https_path_slash = 'httpssCssZssZsgithubsDscomsZsmichaelbrusegardsZstablinesDswezsZs'
+  -- HTTP version (without the 's' in https)
+  local http_path = 'httpCssZssZsgithubsDscomsZsmichaelbrusegardsZstablinesDswez'
+  local http_path_slash = 'httpCssZssZsgithubsDscomsZsmichaelbrusegardsZstablinesDswezsZs'
+
+  -- Check all possible paths
+  if directory_exists(https_path_slash) then
+    return https_path_slash
+  end
+  if directory_exists(https_path) then
+    return https_path
+  end
+  if directory_exists(http_path_slash) then
+    return http_path_slash
+  end
+  if directory_exists(http_path) then
+    return http_path
+  end
+
+  -- Default fallback
+  return https_path
 end
 
 package.path = package.path
