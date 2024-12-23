@@ -278,6 +278,7 @@ And the `tab_active` and `tab_inactive` components which are grouped under Tab a
 - Tab
   - `tab` (tab title)
   - `cwd` (current working directory)
+  - `output` (indicator if tab has unseen output)
   - `parent` (parent directory)
   - `process` (process name)
   - `index` (tab index)
@@ -536,7 +537,7 @@ sections = {
 
 ```lua
 sections = {
-  tab_active = {
+  tabline_a = {
     {
       'cpu',
       throttle = 3, -- How often in seconds the component updates, set to 0 to disable throttling
@@ -581,6 +582,19 @@ sections = {
         docker = wezterm.nerdfonts.md_docker,
         unix = wezterm.nerdfonts.cod_terminal_linux,
       },
+    },
+  },
+}
+```
+
+#### output component options
+
+```lua
+sections = {
+  tab_inactive = {
+    {
+      'output',
+      icon_no_output = wezterm.nerdfonts.md_bell_outline, -- Which icon to show when there is no unseen output. Can be set to nil if you only want to show an icon when there is unseen output.
     },
   },
 }
