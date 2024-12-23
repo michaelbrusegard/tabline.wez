@@ -93,7 +93,7 @@ tabline.setup({
     tab_inactive = { 'index', { 'process', padding = { left = 0, right = 1 } } },
     tabline_x = { 'ram', 'cpu' },
     tabline_y = { 'datetime', 'battery' },
-    tabline_z = { 'hostname' },
+    tabline_z = { 'domain' },
   },
   extensions = {},
 })
@@ -270,6 +270,7 @@ And the `tab_active` and `tab_inactive` components which are grouped under Tab a
   - `battery` (battery percentage)
   - `cpu` (cpu percentage)
   - `datetime` (current date and time)
+  - `domain` (current domain)
   - `hostname` (hostname of the machine)
   - `ram` (ram used in GB)
   - `window` (window title)
@@ -548,16 +549,40 @@ sections = {
 
 ```lua
 sections = {
-  battery_to_icon = {
-    empty = { wezterm.nerdfonts.fa_battery_empty, color = { fg = scheme.ansi[2] } },
-    quarter = wezterm.nerdfonts.fa_battery_quarter,
-    half = wezterm.nerdfonts.fa_battery_half,
-    three_quarters = wezterm.nerdfonts.fa_battery_three_quarters,
-    full = wezterm.nerdfonts.fa_battery_full,
-  }
--- battery_to_icon is a table that maps battery percentage to icons
--- It overwrites the default icon property. To use the default icon property set battery_to_icon to nil
--- The color and align properties can still be used on the icon property
+  tabline_a = {
+    {
+      'battery',
+      battery_to_icon = {
+        empty = { wezterm.nerdfonts.fa_battery_empty, color = { fg = scheme.ansi[2] } },
+        quarter = wezterm.nerdfonts.fa_battery_quarter,
+        half = wezterm.nerdfonts.fa_battery_half,
+        three_quarters = wezterm.nerdfonts.fa_battery_three_quarters,
+        full = wezterm.nerdfonts.fa_battery_full,
+      },
+      -- battery_to_icon is a table that maps battery percentage to icons
+      -- It overwrites the default icon property. To use the default icon property set battery_to_icon to nil
+      -- The color and align properties can still be used on the icon property
+    },
+  },
+}
+```
+
+#### domain component options
+
+```lua
+sections = {
+  tabline_a = {
+    {
+      'domain',
+      domain_to_icon = {
+        default = wezterm.nerdfonts.md_monitor,
+        ssh = wezterm.nerdfonts.md_ssh,
+        wsl = wezterm.nerdfonts.md_microsoft_windows,
+        docker = wezterm.nerdfonts.md_docker,
+        unix = wezterm.nerdfonts.cod_terminal_linux,
+      },
+    },
+  },
 }
 ```
 
