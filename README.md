@@ -64,6 +64,7 @@ tabline.setup({
   options = {
     icons_enabled = true,
     theme = 'Catppuccin Mocha',
+    tabs_enabled = true,
     color_overrides = {},
     section_separators = {
       left = wezterm.nerdfonts.pl_left_hard_divider,
@@ -203,6 +204,12 @@ You will get an object like the `color_overrides` object above, but with the add
 
 > [!TIP]
 > This can be useful when creating your own components or extensions and you want to use the same colors as the current theme
+
+---
+
+### Tabs
+
+You can disable overwriting tabs by setting `tabs_enabled` to `false` in the options table.
 
 ---
 
