@@ -6,6 +6,7 @@ return {
     domain_to_icon = {
       default = wezterm.nerdfonts.md_monitor,
       ssh = wezterm.nerdfonts.md_ssh,
+      sshmux = wezterm.nerdfonts.md_ssh,
       wsl = wezterm.nerdfonts.md_microsoft_windows,
       docker = wezterm.nerdfonts.md_docker,
       unix = wezterm.nerdfonts.cod_terminal_linux,
