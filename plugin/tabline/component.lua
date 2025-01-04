@@ -24,8 +24,8 @@ local function create_attributes(window)
   local current_mode = mode.get(window)
   local colors = config.theme[current_mode]
   for _, ext in pairs(extension.extensions) do
-    if ext.colors then
-      colors = util.deep_extend(util.deep_copy(colors), ext.colors)
+    if ext.theme then
+      colors = util.deep_extend(util.deep_copy(colors), ext.theme)
     end
   end
   attributes_a = {
