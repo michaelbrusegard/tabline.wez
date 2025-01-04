@@ -22,8 +22,8 @@ return {
       tab_inactive = {},
     },
     theme = {
-      a = { bg = config.theme.colors.tab_bar.active_tab.bg_color },
-      b = { fg = config.theme.colors.tab_bar.active_tab.bg_color },
+      a = { bg = config.theme.colors.ansi[4] },
+      b = { fg = config.theme.colors.ansi[4] },
     },
   },
 }

@@ -34,7 +34,7 @@ return {
     },
     sections = {
       tabline_x = {
-        { Foreground = { Color = config.theme.colors.ansi[5] } },
+        { Foreground = { Color = config.theme.colors.brights[4] } },
         wezterm.nerdfonts.cod_save .. ' saved workspace ',
       },
     },
