@@ -65,7 +65,7 @@ tabline.setup({
     icons_enabled = true,
     theme = 'Catppuccin Mocha',
     tabs_enabled = true,
-    color_overrides = {},
+    theme_overrides = {},
     section_separators = {
       left = wezterm.nerdfonts.pl_left_hard_divider,
       right = wezterm.nerdfonts.pl_right_hard_divider,
@@ -144,13 +144,13 @@ options = { theme = config.colors } -- This is the WezTerm config colors object
 
 #### Customizing themes
 
-To modify a theme, you can use the `color_overrides` option.
+To modify a theme, you can use the `theme_overrides` option.
 
 ```lua
 -- Change the background of tabline_c section for normal mode
 tabline.setup({
   options = {
-    color_overrides = {
+    theme_overrides = {
       normal_mode = {
         c = { bg = '#112233' },
       },
@@ -164,7 +164,7 @@ This is also where you would specify the colors for a new [Key Table](https://we
 ```lua
 tabline.setup({
   options = {
-    color_overrides = {
+    theme_overrides = {
     -- Default colors from Catppuccin Mocha
       normal_mode = {
         a = { fg = '#181825', bg = '#89b4fa' },
@@ -198,15 +198,15 @@ tabline.setup({
 })
 ```
 
-#### Getting colors
+#### Getting theme
 
-If you want to get the colors used in the current theme, you can do so with:
+If you want to get the current theme and its colors, you can do so with:
 
 ```lua
-tabline.get_colors()
+tabline.get_theme()
 ```
 
-You will get an object like the `color_overrides` object above, but with the addition of a colors property (the colors property is the colors object from the WezTerm config with every color found there).
+You will get an object like the `theme_overrides` object above, but with the addition of a colors property (the colors property is the colors object from the WezTerm config with every color found there).
 
 > [!TIP]
 > This can be useful when creating your own components or extensions and you want to use the same colors as the current theme

@@ -21,7 +21,7 @@ return {
       tab_active = {},
       tab_inactive = {},
     },
-    colors = {
+    theme = {
       a = { bg = config.theme.colors.ansi[3] },
       b = { fg = config.theme.colors.ansi[3] },
     },
@@ -34,7 +34,7 @@ return {
     },
     sections = {
       tabline_x = {
-        { Foreground = { Color = config.theme.colors.indexed[16] } },
+        { Foreground = { Color = config.theme.colors.ansi[5] } },
         wezterm.nerdfonts.cod_save .. ' saved workspace ',
       },
     },

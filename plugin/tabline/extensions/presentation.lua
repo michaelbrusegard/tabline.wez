@@ -22,7 +22,7 @@ return {
       tab_active = {},
       tab_inactive = {},
     },
-    colors = {
+    theme = {
       a = { bg = config.theme.colors.ansi[7] },
       b = { fg = config.theme.colors.ansi[7] },
     },

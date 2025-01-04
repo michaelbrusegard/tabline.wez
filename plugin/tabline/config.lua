@@ -45,26 +45,16 @@ local default_component_opts = {
   padding = 1,
 }
 
-local function lighten_color(color, percent)
-  local r = tonumber(color:sub(2, 3), 16)
-  local g = tonumber(color:sub(4, 5), 16)
-  local b = tonumber(color:sub(6, 7), 16)
-
-  r = math.floor(r + ((255 - r) * percent))
-  g = math.floor(g + ((255 - g) * percent))
-  b = math.floor(b + ((255 - b) * percent))
-
-  return string.format('#%02x%02x%02x', r, g, b)
-end
-
 local function get_colors(theme)
   local colors = type(theme) == 'string' and wezterm.color.get_builtin_schemes()[theme] or theme
-  local surface = lighten_color(colors.background, 0.1)
+  local surface = colors.cursor and colors.cursor.bg or colors.ansi[1]
   local background = colors.tab_bar and colors.tab_bar.inactive_tab and colors.tab_bar.inactive_tab.bg_color
     or colors.background
 
-  if colors.tab_bar and colors.tab_bar.inactive_tab and colors.tab_bar.inactive_tab_edge ~= background then
-    surface = colors.tab_bar.inactive_tab_edge or surface
+  if type(theme) == 'string' then
+    if string.find(theme, 'Catppuccin') then
+      surface = colors.tab_bar.inactive_tab_edge
+    end
   end
 
   return {
@@ -109,13 +99,13 @@ end
 function M.set(user_opts)
   user_opts = user_opts or { options = {} }
   user_opts.options = user_opts.options or {}
-  local color_overrides = user_opts.options.color_overrides or {}
-  user_opts.options.color_overrides = nil
+  local theme_overrides = user_opts.options.theme_overrides or {}
+  user_opts.options.theme_overrides = nil
 
   M.component_opts = set_component_opts(user_opts)
   M.opts = util.deep_extend(default_opts, user_opts)
   M.sections = util.deep_copy(M.opts.sections)
-  M.theme = util.deep_extend(get_colors(M.opts.options.theme), color_overrides)
+  M.theme = util.deep_extend(get_colors(M.opts.options.theme), theme_overrides)
 end
 
 return M
