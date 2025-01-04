@@ -7,25 +7,25 @@ local mode = require('tabline.components.window.mode')
 local M = {}
 
 local left_section_separator =
-{ Text = config.opts.options.section_separators.left or config.opts.options.section_separators }
+  { Text = config.opts.options.section_separators.left or config.opts.options.section_separators }
 local right_section_separator =
-{ Text = config.opts.options.section_separators.right or config.opts.options.section_separators }
+  { Text = config.opts.options.section_separators.right or config.opts.options.section_separators }
 local left_component_separator =
-{ Text = config.opts.options.component_separators.left or config.opts.options.component_separators }
+  { Text = config.opts.options.component_separators.left or config.opts.options.component_separators }
 local right_component_separator =
-{ Text = config.opts.options.component_separators.right or config.opts.options.component_separators }
+  { Text = config.opts.options.component_separators.right or config.opts.options.component_separators }
 
 local attributes_a, attributes_b, attributes_c, attributes_x, attributes_y, attributes_z = {}, {}, {}, {}, {}, {}
 local section_seperator_attributes_a, section_seperator_attributes_b, section_seperator_attributes_c, section_seperator_attributes_x, section_seperator_attributes_y, section_seperator_attributes_z =
-    {}, {}, {}, {}, {}, {}
+  {}, {}, {}, {}, {}, {}
 local tabline_a, tabline_b, tabline_c, tabline_x, tabline_y, tabline_z = {}, {}, {}, {}, {}, {}
 
 local function create_attributes(window)
   local current_mode = mode.get(window)
-  local colors = config.colors[current_mode]
+  local colors = config.theme[current_mode]
   for _, ext in pairs(extension.extensions) do
-    if ext.colors then
-      colors = util.deep_extend(util.deep_copy(colors), ext.colors)
+    if ext.theme then
+      colors = util.deep_extend(util.deep_copy(colors), ext.theme)
     end
   end
   attributes_a = {
@@ -104,9 +104,12 @@ local function create_sections(window)
   tabline_a = insert_component_separators(util.extract_components(sections.tabline_a, attributes_a, window, true), true)
   tabline_b = insert_component_separators(util.extract_components(sections.tabline_b, attributes_b, window, true), true)
   tabline_c = insert_component_separators(util.extract_components(sections.tabline_c, attributes_c, window, true), true)
-  tabline_x = insert_component_separators(util.extract_components(sections.tabline_x, attributes_x, window, true), false)
-  tabline_y = insert_component_separators(util.extract_components(sections.tabline_y, attributes_y, window, true), false)
-  tabline_z = insert_component_separators(util.extract_components(sections.tabline_z, attributes_z, window, true), false)
+  tabline_x =
+    insert_component_separators(util.extract_components(sections.tabline_x, attributes_x, window, true), false)
+  tabline_y =
+    insert_component_separators(util.extract_components(sections.tabline_y, attributes_y, window, true), false)
+  tabline_z =
+    insert_component_separators(util.extract_components(sections.tabline_z, attributes_z, window, true), false)
 end
 
 local function right_section()

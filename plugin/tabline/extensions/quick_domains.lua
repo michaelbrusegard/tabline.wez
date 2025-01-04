@@ -21,9 +21,9 @@ return {
       tab_active = {},
       tab_inactive = {},
     },
-    colors = {
-      a = { bg = config.colors.scheme.tab_bar.active_tab.bg_color },
-      b = { fg = config.colors.scheme.tab_bar.active_tab.bg_color },
+    theme = {
+      a = { bg = config.theme.colors.ansi[4] },
+      b = { fg = config.theme.colors.ansi[4] },
     },
   },
 }

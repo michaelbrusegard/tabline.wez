@@ -11,10 +11,10 @@ local active_attributes, inactive_attributes, active_separator_attributes, inact
 local tab_active, tab_inactive = {}, {}
 
 local function create_attributes(hover)
-  local colors = config.colors.tab
+  local colors = config.theme.tab
   for _, ext in pairs(extension.extensions) do
-    if ext.colors and ext.colors.tab then
-      colors = util.deep_extend(util.deep_copy(colors), ext.colors.tab)
+    if ext.theme and ext.theme.tab then
+      colors = util.deep_extend(util.deep_copy(colors), ext.theme.tab)
     end
   end
   active_attributes = {

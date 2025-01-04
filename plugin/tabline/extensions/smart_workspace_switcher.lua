@@ -25,9 +25,9 @@ return {
       tab_active = {},
       tab_inactive = {},
     },
-    colors = {
-      a = { bg = config.colors.scheme.compose_cursor },
-      b = { fg = config.colors.scheme.compose_cursor },
+    theme = {
+      a = { bg = config.theme.colors.ansi[6] },
+      b = { fg = config.theme.colors.ansi[6] },
     },
   },
 }

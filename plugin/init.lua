@@ -78,7 +78,7 @@ function M.apply_to_config(config)
   }
   config.colors = {
     tab_bar = {
-      background = require('tabline.config').colors.normal_mode.c.bg,
+      background = require('tabline.config').theme.normal_mode.c.bg,
     },
   }
   config.status_update_interval = 500
