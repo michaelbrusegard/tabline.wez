@@ -134,7 +134,13 @@ tabline.setup()
 options = { theme = 'GruvboxDark' }
 ```
 
-All available themes are found [here](https://wezfurlong.org/wezterm/colorschemes/index.html).
+All available themes are found [here](https://wezfurlong.org/wezterm/colorschemes/index.html). Tabline uses [get_builtin_schemes()](https://wezfurlong.org/wezterm/config/lua/wezterm.color/get_builtin_schemes.html) under the hood, and not all the color schemes in WezTerm supplies the colors that some of the [extensions](#extensions) for Tabline require. To get around this it is also possible to input your own colors from the WezTerm config or a completely custom colors scheme object.
+
+```lua
+options = { theme = config.colors } -- This is the WezTerm config colors object
+```
+
+```
 
 #### Customizing themes
 
@@ -200,7 +206,7 @@ If you want to get the colors used in the current theme, you can do so with:
 tabline.get_colors()
 ```
 
-You will get an object like the `color_overrides` object above, but with the addition of a scheme property (the scheme property is the scheme object from WezTerm with every color found there).
+You will get an object like the `color_overrides` object above, but with the addition of a colors property (the colors property is the colors object from the WezTerm config with every color found there).
 
 > [!TIP]
 > This can be useful when creating your own components or extensions and you want to use the same colors as the current theme

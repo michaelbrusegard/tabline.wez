@@ -1,12 +1,12 @@
 local wezterm = require('wezterm')
 local util = require('tabline.util')
 local config = require('tabline.config')
-local scheme = config.colors.scheme
+local colors = config.theme.colors
 
 return {
   default_opts = {
     battery_to_icon = {
-      empty = { wezterm.nerdfonts.fa_battery_empty, color = { fg = scheme.ansi[2] } },
+      empty = { wezterm.nerdfonts.fa_battery_empty, color = { fg = colors.ansi[2] } },
       quarter = wezterm.nerdfonts.fa_battery_quarter,
       half = wezterm.nerdfonts.fa_battery_half,
       three_quarters = wezterm.nerdfonts.fa_battery_three_quarters,

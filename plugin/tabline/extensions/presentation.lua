@@ -23,8 +23,8 @@ return {
       tab_inactive = {},
     },
     colors = {
-      a = { bg = config.colors.scheme.ansi[7] },
-      b = { fg = config.colors.scheme.ansi[7] },
+      a = { bg = config.theme.colors.ansi[7] },
+      b = { fg = config.theme.colors.ansi[7] },
     },
   },
 }
