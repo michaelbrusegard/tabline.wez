@@ -140,8 +140,6 @@ All available themes are found [here](https://wezfurlong.org/wezterm/colorscheme
 options = { theme = config.colors } -- This is the WezTerm config colors object
 ```
 
-```
-
 #### Customizing themes
 
 To modify a theme, you can use the `theme_overrides` option.
@@ -191,7 +189,7 @@ tabline.setup({
       tab = {
         active = { fg = '#89b4fa', bg = '#313244' },
         inactive = { fg = '#cdd6f4', bg = '#181825' },
-        inactive_hover = { fg = '#f5c2e7', bg = '#313244' } },
+        inactive_hover = { fg = '#f5c2e7', bg = '#313244' },
       }
     }
   }
