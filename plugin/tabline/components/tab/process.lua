@@ -78,7 +78,8 @@ return {
     -- Wezterm uses OSC 1/2 escape sequences to guess the process name and set the title
     -- see https://wezfurlong.org/wezterm/config/lua/pane/get_title.html
     -- title defaults to 'wezterm' if another name is unavailable
-    if foreground_process_name == '' then
+    -- Also, when running under WSL, try to use the OSC 1/2 escape sequences as well
+    if foreground_process_name == '' or foreground_process_name == 'wslhost.exe' then
       foreground_process_name = (tab.tab_title and #tab.tab_title > 0) and tab.tab_title or tab.active_pane.title
     end
 
