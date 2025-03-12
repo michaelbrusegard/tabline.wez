@@ -5,9 +5,9 @@ return {
   {
     'resurrect',
     events = {
-      show = 'resurrect.fuzzy_load.start',
+      show = 'resurrect.fuzzy_loader.fuzzy_load.start',
       hide = {
-        'resurrect.fuzzy_load.finished',
+        'resurrect.fuzzy_loader.fuzzy_load.finished',
         'quick_domain.fuzzy_selector.opened',
         'smart_workspace_switcher.workspace_switcher.start',
       },
@@ -27,9 +27,9 @@ return {
     },
   },
   {
-    'resurrect.periodic_save',
+    'resurrect.state_manager.periodic_save',
     events = {
-      show = 'resurrect.periodic_save',
+      show = 'resurrect.state_manager.periodic_save',
       delay = 7,
     },
     sections = {
