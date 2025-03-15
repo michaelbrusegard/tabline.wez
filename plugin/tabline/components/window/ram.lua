@@ -21,7 +21,7 @@ return {
         'wmic OS get FreePhysicalMemory',
       }
     elseif string.match(wezterm.target_triple, 'linux') ~= nil then
-      success, result = wezterm.run_child_process { 'bash', '-c', 'free -m | awk \'NR==3{printf "%.2f", $3/1000 }\'' }
+      success, result = wezterm.run_child_process { 'bash', '-c', 'free -m | awk \'NR==2{printf "%.2f", $3/1000 }\'' }
     elseif string.match(wezterm.target_triple, 'darwin') ~= nil then
       success, result = wezterm.run_child_process { 'vm_stat' }
     end
