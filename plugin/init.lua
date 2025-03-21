@@ -82,8 +82,12 @@ function M.get_config()
   return require('tabline.config').opts
 end
 
-function M.get_colors()
-  return require('tabline.config').colors
+function M.get_theme()
+  return require('tabline.config').theme
+end
+
+function M.set_theme(theme, overrides)
+  return require('tabline.config').set_theme(theme, overrides)
 end
 
 function M.refresh(window, tab)

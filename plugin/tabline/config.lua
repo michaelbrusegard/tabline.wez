@@ -108,4 +108,15 @@ function M.set(user_opts)
   M.theme = util.deep_extend(get_colors(M.opts.options.theme), theme_overrides)
 end
 
+function M.set_theme(theme, overrides)
+  if theme == nil and overrides == nil then
+    local current_theme = M.opts and M.opts.options.theme or default_opts.options.theme
+    M.theme = util.deep_extend(get_colors(current_theme), {})
+  elseif type(theme) == 'table' then
+    M.theme = util.deep_extend(M.theme or {}, theme)
+  else
+    M.theme = util.deep_extend(get_colors(theme), overrides or {})
+  end
+end
+
 return M

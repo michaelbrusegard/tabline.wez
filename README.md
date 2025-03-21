@@ -209,6 +209,26 @@ You will get an object like the `theme_overrides` object above, but with the add
 > [!TIP]
 > This can be useful when creating your own components or extensions and you want to use the same colors as the current theme
 
+#### Setting theme after setup
+
+You can change the theme after setup using:
+
+```lua
+tabline.set_theme('GruvboxDark') -- Just change theme
+-- or
+tabline.set_theme('GruvboxDark', {  -- Change theme with overrides
+  normal_mode = {
+    a = { fg = '#000000', bg = '#ffffff' }
+  }
+}) 
+-- or
+tabline.set_theme({ -- Just apply new overrides to current theme
+  normal_mode = {
+    a = { fg = '#000000', bg = '#ffffff' }
+  }
+})
+```
+
 ---
 
 ### Tabs
