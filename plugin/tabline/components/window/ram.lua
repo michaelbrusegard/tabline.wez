@@ -35,16 +35,17 @@ return {
       ram = string.format('%.2f GB', tonumber(result))
     elseif string.match(wezterm.target_triple, 'darwin') ~= nil then
       local page_size = result:match('page size of (%d+) bytes')
-      local pages_free = result:match('Pages free: +(%d+).')
-      local pages_active = result:match('Pages active: +(%d+).')
-      local pages_inactive = result:match('Pages inactive: +(%d+).')
-      local pages_speculative = result:match('Pages speculative: +(%d+).')
-      local total_memory = (pages_free + pages_active + pages_inactive + pages_speculative)
+      local anonymous_pages = result:match('Anonymous pages: +(%d+).')
+      local pages_purgeable = result:match('Pages purgeable: +(%d+).')
+      local app_memory = anonymous_pages - pages_purgeable
+      local wired_memory = result:match('Pages wired down: +(%d+).')
+      local compressed_memory = result:match('Pages occupied by compressor: +(%d+).')
+      local used_memory = (app_memory + wired_memory + compressed_memory)
         * page_size
         / 1024
         / 1024
         / 1024
-      ram = string.format('%.2f GB', total_memory)
+      ram = string.format('%.2f GB', used_memory)
     elseif string.match(wezterm.target_triple, 'windows') ~= nil then
       ram = result:match('%d+')
       ram = string.format('%.2f GB', tonumber(ram) / 1024 / 1024)
