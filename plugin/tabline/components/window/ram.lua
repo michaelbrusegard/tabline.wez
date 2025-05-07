@@ -7,6 +7,7 @@ return {
   default_opts = {
     throttle = 3,
     icon = wezterm.nerdfonts.cod_server,
+    use_pwsh = false,
   },
   update = function(_, opts)
     local current_time = os.time()
@@ -15,11 +16,19 @@ return {
     end
     local success, result
     if string.match(wezterm.target_triple, 'windows') ~= nil then
-      success, result = wezterm.run_child_process {
-        'cmd.exe',
-        '/C',
-        'wmic OS get FreePhysicalMemory',
-      }
+      if opts.use_pwsh then
+        success, result = wezterm.run_child_process {
+          'powershell.exe',
+          '-Command',
+          'Get-CimInstance Win32_OperatingSystem | Select-Object -ExpandProperty FreePhysicalMemory',
+        }
+      else
+        success, result = wezterm.run_child_process {
+          'cmd.exe',
+          '/C',
+          'wmic OS get FreePhysicalMemory',
+        }
+      end
     elseif string.match(wezterm.target_triple, 'linux') ~= nil then
       success, result = wezterm.run_child_process { 'bash', '-c', 'free -m | awk \'NR==2{printf "%.2f", $3/1000 }\'' }
     elseif string.match(wezterm.target_triple, 'darwin') ~= nil then
@@ -47,8 +56,13 @@ return {
         / 1024
       ram = string.format('%.2f GB', used_memory)
     elseif string.match(wezterm.target_triple, 'windows') ~= nil then
-      ram = result:match('%d+')
-      ram = string.format('%.2f GB', tonumber(ram) / 1024 / 1024)
+      if opts.use_pwsh then
+        ram = tonumber(result:match('%d+%.?%d*') or '0')
+        ram = string.format('%.2f GB', ram / 1024 / 1024)
+      else
+        ram = result:match('%d+')
+        ram = string.format('%.2f GB', tonumber(ram) / 1024 / 1024)
+      end
     end
 
     last_update_time = current_time
