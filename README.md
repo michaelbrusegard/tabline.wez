@@ -570,6 +570,7 @@ sections = {
     {
       'cpu',
       throttle = 3, -- How often in seconds the component updates, set to 0 to disable throttling
+      use_pwsh = false, -- If you want use powershell, set to true. default is false
     },
   },
 }

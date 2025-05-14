@@ -7,6 +7,7 @@ return {
   default_opts = {
     throttle = 3,
     icon = wezterm.nerdfonts.oct_cpu,
+    use_pwsh = false,
   },
   update = function(_, opts)
     local current_time = os.time()
@@ -15,11 +16,19 @@ return {
     end
     local success, result
     if string.match(wezterm.target_triple, 'windows') ~= nil then
-      success, result = wezterm.run_child_process {
-        'cmd.exe',
-        '/C',
-        'wmic cpu get loadpercentage',
-      }
+      if opts.use_pwsh then
+        success, result = wezterm.run_child_process {
+          'powershell.exe',
+          '-Command',
+          'Get-CimInstance Win32_Processor | Select-Object -ExpandProperty LoadPercentage',
+        }
+      else
+        success, result = wezterm.run_child_process {
+          'cmd.exe',
+          '/C',
+          'wmic cpu get loadpercentage',
+        }
+      end
     elseif string.match(wezterm.target_triple, 'linux') ~= nil then
       success, result = wezterm.run_child_process {
         'bash',
@@ -40,7 +49,11 @@ return {
 
     local cpu
     if string.match(wezterm.target_triple, 'windows') ~= nil then
-      cpu = result:match('%d+')
+      if opts.use_pwsh then
+        cpu = tonumber(result:match('%d+%.?%d*') or '0')
+      else
+        cpu = result:match('%d+')
+      end
     else
       cpu = result:gsub('^%s*(.-)%s*$', '%1')
     end
