@@ -33,13 +33,13 @@ return {
       success, result = wezterm.run_child_process {
         'bash',
         '-c',
-        "awk '/^cpu / {print ($2+$4)*100/($2+$4+$5)}' /proc/stat",
+        "LC_NUMERIC=C awk '/^cpu / {print ($2+$4)*100/($2+$4+$5)}' /proc/stat",
       }
     elseif string.match(wezterm.target_triple, 'darwin') ~= nil then
       success, result = wezterm.run_child_process {
         'bash',
         '-c',
-        'ps -A -o %cpu | awk \'{s+=$1} END {print s ""}\'',
+        'ps -A -o %cpu | LC_NUMERIC=C awk \'{s+=$1} END {print s ""}\'',
       }
     end
 
