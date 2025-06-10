@@ -30,7 +30,8 @@ return {
         }
       end
     elseif string.match(wezterm.target_triple, 'linux') ~= nil then
-      success, result = wezterm.run_child_process { 'bash', '-c', 'free -m | awk \'NR==2{printf "%.2f", $3/1000 }\'' }
+      success, result =
+        wezterm.run_child_process { 'bash', '-c', 'free -m | LC_NUMERIC=C awk \'NR==2{printf "%.2f", $3/1000 }\'' }
     elseif string.match(wezterm.target_triple, 'darwin') ~= nil then
       success, result = wezterm.run_child_process { 'vm_stat' }
     end
@@ -49,11 +50,7 @@ return {
       local app_memory = anonymous_pages - pages_purgeable
       local wired_memory = result:match('Pages wired down: +(%d+).')
       local compressed_memory = result:match('Pages occupied by compressor: +(%d+).')
-      local used_memory = (app_memory + wired_memory + compressed_memory)
-        * page_size
-        / 1024
-        / 1024
-        / 1024
+      local used_memory = (app_memory + wired_memory + compressed_memory) * page_size / 1024 / 1024 / 1024
       ram = string.format('%.2f GB', used_memory)
     elseif string.match(wezterm.target_triple, 'windows') ~= nil then
       if opts.use_pwsh then
