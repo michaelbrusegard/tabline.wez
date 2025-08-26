@@ -73,6 +73,21 @@ local function get_colors(theme)
       b = { fg = colors.ansi[3], bg = surface },
       c = { fg = colors.foreground, bg = background },
     },
+    ui_mode = {
+      a = { fg = background, bg = colors.ansi[2] },
+      b = { fg = colors.ansi[2], bg = surface },
+      c = { fg = colors.foreground, bg = background },
+    },
+    scroll_mode = {
+      a = { fg = background, bg = colors.ansi[6] },
+      b = { fg = colors.ansi[6], bg = surface },
+      c = { fg = colors.foreground, bg = background },
+    },
+    visual_mode = {
+      a = { fg = background, bg = colors.ansi[7] },
+      b = { fg = colors.ansi[7], bg = surface },
+      c = { fg = colors.foreground, bg = background },
+    },
     tab = {
       active = { fg = colors.ansi[5], bg = surface },
       inactive = { fg = colors.foreground, bg = background },
