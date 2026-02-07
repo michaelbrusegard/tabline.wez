@@ -10,7 +10,7 @@ local plugin_dir = wezterm.plugin.list()[1].plugin_dir:gsub(separator .. '[^' ..
 
 --- Checks if the plugin directory exists
 local function directory_exists(path)
-  local success, result = pcall(wezterm.read_dir, plugin_dir .. path)
+  local success, result = pcall(wezterm.read_dir, plugin_dir .. separator .. path)
   return success and result
 end
 
