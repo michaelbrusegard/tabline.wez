@@ -34,6 +34,15 @@ return {
         wezterm.run_child_process { 'bash', '-c', 'free -m | LC_NUMERIC=C awk \'NR==2{printf "%.2f", $3/1000 }\'' }
     elseif string.match(wezterm.target_triple, 'darwin') ~= nil then
       success, result = wezterm.run_child_process { 'vm_stat' }
+    elseif string.match(wezterm.target_triple, 'freebsd') ~= nil then
+      success, result = wezterm.run_child_process { 'sysctl', '-n',
+          'hw.pagesize',
+          'vm.stats.vm.v_free_count',
+          'vm.stats.vm.v_inactive_count',
+          'vm.stats.vm.v_active_count',
+          'vm.stats.vm.v_wire_count',
+          'vm.stats.vm.v_laundry_count',
+      }
     end
 
     if not success or not result then
@@ -60,6 +69,11 @@ return {
         ram = result:match('%d+')
         ram = string.format('%.2f GB', tonumber(ram) / 1024 / 1024)
       end
+    elseif string.match(wezterm.target_triple, 'freebsd') ~= nil then
+      local pg_sz, mem_free, mem_inact, mem_act, mem_wired, mem_laundry = result:match( '(%d+)%s+(%d+)%s+(%d+)%s+(%d+)%s(%d+)%s(%d+)' )
+      local used = tonumber(mem_wired) + tonumber(mem_act) + tonumber(mem_laundry)
+      used = tonumber(pg_sz) * used / 2^30
+      ram = string.format('%.2f GB', used)
     end
 
     last_update_time = current_time
