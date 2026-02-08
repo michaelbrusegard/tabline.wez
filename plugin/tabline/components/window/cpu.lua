@@ -2,6 +2,7 @@ local wezterm = require('wezterm')
 
 local last_update_time = 0
 local last_result = ''
+local last_sample = nil
 
 return {
   default_opts = {
@@ -41,6 +42,14 @@ return {
         '-c',
         'ps -A -o %cpu | LC_NUMERIC=C awk \'{s+=$1} END {print s ""}\'',
       }
+    elseif string.match(wezterm.target_triple, 'freebsd') ~= nil then
+      -- get the aggregated cpu metrics
+      -- https://freebsdfoundation.org/wp-content/uploads/2023/01/jones_activitymonitor.pdf
+      success, result = wezterm.run_child_process {
+        'sysctl',
+        '-n',
+        'kern.cp_time',
+      }
     end
 
     if not success or not result then
@@ -70,6 +79,21 @@ return {
         if num_cores and cpu_num then
           cpu = cpu_num / num_cores
         end
+      end
+    elseif string.match(wezterm.target_triple, 'freebsd') ~= nil then
+      if last_sample ~= nil then
+        local cur_sample = { cpu:match('(%d+)%s+(%d+)%s+(%d+)%s+(%d+)%s(%d+)') }
+        local busy, total = 0, 0
+        for n = 1, 5 do
+          local diff = tonumber(cur_sample[n]) - tonumber(last_sample[n])
+          total = total + diff
+          busy = busy + (n < 5 and diff or 0)
+        end
+        cpu = busy / total * 100
+      else
+        -- remember the current probe results, will use it on the next iteration
+        last_sample = { cpu:match('(%d+)%s+(%d+)%s+(%d+)%s+(%d+)%s(%d+)') }
+        return ''
       end
     end
 
