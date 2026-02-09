@@ -48,7 +48,8 @@ return {
       success, result = wezterm.run_child_process {
         'sysctl',
         '-n',
-        'kern.cp_time',
+        'hw.ncpu',
+        'kern.cp_times',
       }
     end
 
@@ -81,19 +82,45 @@ return {
         end
       end
     elseif string.match(wezterm.target_triple, 'freebsd') ~= nil then
-      if last_sample ~= nil then
-        local cur_sample = { cpu:match('(%d+)%s+(%d+)%s+(%d+)%s+(%d+)%s(%d+)') }
-        local busy, total = 0, 0
-        for n = 1, 5 do
-          local diff = tonumber(cur_sample[n]) - tonumber(last_sample[n])
-          total = total + diff
-          busy = busy + (n < 5 and diff or 0)
-        end
-        cpu = busy / total * 100
+      -- the mertics follow like this (split onto lines for readability):
+      --
+      --    NCPU                                                    --<< total # of CPUs/cores
+      --    cpu0(user) cpu0(nice) cpu0(sys) cpu0(intr) cpu0(idle)   --<< CPU/core counters
+      --    cpu1(user) cpu1(nice) cpu1(sys) cpu1(intr) cpu1(idle)
+      --    ...
+      --    cpuN(user) cpuN(nice) cpuN(sys) cpuN(intr) cpuN(idle)
+      --
+      -- Thefore, for instance the N-th CPU(sys) will be at offset: 1 + N*5 + 3
+      local i, counter, cur_sample = 1, "", {}
+      for counter in cpu:gmatch('%d+') do
+          cur_sample[i], i = tonumber(counter), i + 1
+      end
+
+      if last_sample ~= nil and #cur_sample == #last_sample then
+          local ncpu, n, usage = cur_sample[1], 0, 0
+          -- process every CPU core
+          for n = 1, ncpu do
+            local offset = 5 * (n - 1) + 1
+            local busy, idle = 0, 0
+            -- calculate "busy", includes: user(1), nice(2), sys(3), intr(4)
+            for i = 1, 4 do
+              busy = busy + (cur_sample[offset+i] - last_sample[offset+i])
+            end
+            -- calculate "free", includes: idle(5)
+            idle = cur_sample[offset + 5] - last_sample[offset+5]
+            usage = usage + busy/(busy + idle)
+          end
+          cpu = usage / ncpu * 100
       else
-        -- remember the current probe results, will use it on the next iteration
-        last_sample = { cpu:match('(%d+)%s+(%d+)%s+(%d+)%s+(%d+)%s(%d+)') }
-        return ''
+        last_sample = {}
+      end
+
+      for i = 1, #cur_sample do
+        last_sample[i] = cur_sample[i]
+      end
+
+      if type(cpu) ~= "number" then
+          cpu = 0
       end
     end
 
