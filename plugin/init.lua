@@ -8,48 +8,87 @@ local separator = is_windows and '\\' or '/'
 
 local plugin_dir = wezterm.plugin.list()[1].plugin_dir:gsub(separator .. '[^' .. separator .. ']*$', '')
 
---- Checks if the plugin directory exists
-local function directory_exists(path)
-  local success, result = pcall(wezterm.read_dir, plugin_dir .. path)
-  return success and result
-end
+function plugin_package_path()
 
---- Returns the name of the package, used when requiring modules
-local function get_require_path()
-  -- HTTPS version
-  local https_path = 'httpssCssZssZsgithubsDscomsZsmichaelbrusegardsZstablinesDswez'
-  local https_path_slash = 'httpssCssZssZsgithubsDscomsZsmichaelbrusegardsZstablinesDswezsZs'
-  -- HTTP version (without the 's' in https)
-  local http_path = 'httpCssZssZsgithubsDscomsZsmichaelbrusegardsZstablinesDswez'
-  local http_path_slash = 'httpCssZssZsgithubsDscomsZsmichaelbrusegardsZstablinesDswezsZs'
+  local basename = "tabline.wez"
 
-  -- Check all possible paths
-  if directory_exists(https_path_slash) then
-    return https_path_slash
-  end
-  if directory_exists(https_path) then
-    return https_path
-  end
-  if directory_exists(http_path_slash) then
-    return http_path_slash
-  end
-  if directory_exists(http_path) then
-    return http_path
+  -- simple encoding map (incomplete, though should work fine unless plugin is
+  -- installed locally into the subfolder with really weird name)
+  local encmap = {
+    [":"] = "sCs",
+    ["/"] = "sZs",
+    ["\\"] = "sBs",
+    ["."]  = "sDs",
+    ["%"]  = "sPs",
+  }
+
+  local components = {
+    string.format("https://github.com/michaelbrusegard/%s", basename),
+    string.format("https://github.com/michaelbrusegard/%s/", basename),
+    string.format("http://github.com/michaelbrusegard/%s", basename),
+    string.format("http://github.com/michaelbrusegard/%s/", basename),
+    basename,
+  }
+
+  local i = nil
+  for i = 1, #components do
+    components[i] = components[i]:gsub("[%:%/%\\%.%%]", encmap)
   end
 
-  -- Default fallback
-  return https_path
+  -- add unescaped name "as-is". Covers the case when plugin is installed
+  -- into $XDG_DATA_HOME/wezterm/plugins via direct clone
+  components[#components+1] = basename
+
+  local plugin, plugin_subdir, my_package_subdir = {}, "", nil
+  for _, plugin in ipairs(wezterm.plugin.list()) do
+    plugin_subdir = plugin.component
+    for i = 1, #components do
+
+      -- this one covers both (https:// and http://) cause ":" is translated to "sCs"
+      if plugin_subdir:sub(1, 5) == "https" then
+        if plugin_subdir == components[i] then
+          my_package_subdir = plugin_subdir
+          break
+        end
+      elseif plugin_subdir:sub(1, 7) == "filesCs" then
+        -- there is no way predict the full local path. Therefore, the best
+        -- can be done here is checking the "leaf" folder
+        if plugin_subdir:match("s[BZ]s" .. components[i] .. "$") ~= nil then
+          my_package_subdir = plugin_subdir
+          break
+        end
+      elseif plugin_subdir == components[i] then
+        -- this one handles the case when plugin whas cloned "as is" somewhere
+        -- into $XDG_DATA_HOME/weztermp/plugins
+        my_package_subdir = plugin_subdir
+        break
+      end
+    end
+
+    if my_package_subdir then
+      break
+    end
+  end
+
+  if not my_package_subdir then
+    -- fallback to the most probable (derived from official github address) option
+    my_package_subdir = components[1]
+  end
+
+  return plugin_dir
+        .. separator
+        .. my_package_subdir
+        .. separator
+        .. 'plugin'
+        .. separator
+        .. '?.lua'
+
+
 end
 
 package.path = package.path
   .. ';'
-  .. plugin_dir
-  .. separator
-  .. get_require_path()
-  .. separator
-  .. 'plugin'
-  .. separator
-  .. '?.lua'
+  .. plugin_package_path()
 
 function M.setup(opts)
   require('tabline.config').set(opts)

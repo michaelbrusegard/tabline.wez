@@ -2,6 +2,7 @@ local wezterm = require('wezterm')
 
 local last_update_time = 0
 local last_result = ''
+local last_sample = nil
 
 return {
   default_opts = {
@@ -41,6 +42,15 @@ return {
         '-c',
         'ps -A -o %cpu | LC_NUMERIC=C awk \'{s+=$1} END {print s ""}\'',
       }
+    elseif string.match(wezterm.target_triple, 'freebsd') ~= nil then
+      -- get the aggregated cpu metrics
+      -- https://freebsdfoundation.org/wp-content/uploads/2023/01/jones_activitymonitor.pdf
+      success, result = wezterm.run_child_process {
+        'sysctl',
+        '-n',
+        'hw.ncpu',
+        'kern.cp_times',
+      }
     end
 
     if not success or not result then
@@ -70,6 +80,47 @@ return {
         if num_cores and cpu_num then
           cpu = cpu_num / num_cores
         end
+      end
+    elseif string.match(wezterm.target_triple, 'freebsd') ~= nil then
+      -- the mertics follow like this (split onto lines for readability):
+      --
+      --    NCPU                                                    --<< total # of CPUs/cores
+      --    cpu0(user) cpu0(nice) cpu0(sys) cpu0(intr) cpu0(idle)   --<< CPU/core counters
+      --    cpu1(user) cpu1(nice) cpu1(sys) cpu1(intr) cpu1(idle)
+      --    ...
+      --    cpuN(user) cpuN(nice) cpuN(sys) cpuN(intr) cpuN(idle)
+      --
+      -- Thefore, for instance the N-th CPU(sys) will be at offset: 1 + N*5 + 3
+      local i, counter, cur_sample = 1, "", {}
+      for counter in cpu:gmatch('%d+') do
+          cur_sample[i], i = tonumber(counter), i + 1
+      end
+
+      if last_sample ~= nil and #cur_sample == #last_sample then
+          local ncpu, n, usage = cur_sample[1], 0, 0
+          -- process every CPU core
+          for n = 1, ncpu do
+            local offset = 5 * (n - 1) + 1
+            local busy, idle = 0, 0
+            -- calculate "busy", includes: user(1), nice(2), sys(3), intr(4)
+            for i = 1, 4 do
+              busy = busy + (cur_sample[offset+i] - last_sample[offset+i])
+            end
+            -- calculate "free", includes: idle(5)
+            idle = cur_sample[offset + 5] - last_sample[offset+5]
+            usage = usage + busy/(busy + idle)
+          end
+          cpu = usage / ncpu * 100
+      else
+        last_sample = {}
+      end
+
+      for i = 1, #cur_sample do
+        last_sample[i] = cur_sample[i]
+      end
+
+      if type(cpu) ~= "number" then
+          cpu = 0
       end
     end
 
