@@ -43,6 +43,10 @@ local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabl
 
 You'll also need to have a patched font if you want icons.
 
+## Type Support
+
+For better development experience (autocompletion, type checking), you can use [wezterm-types](https://github.com/DrKJeff16/wezterm-types). It includes type definitions for `tabline.wez`.
+
 ## Usage and customization
 
 Tabline has sections as shown below just like lualine with the addition of `tabs` in the middle.
@@ -220,7 +224,7 @@ tabline.set_theme('GruvboxDark', {  -- Change theme with overrides
   normal_mode = {
     a = { fg = '#000000', bg = '#ffffff' }
   }
-}) 
+})
 -- or
 tabline.set_theme({ -- Just apply new overrides to current theme
   normal_mode = {
