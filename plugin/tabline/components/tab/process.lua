@@ -72,6 +72,8 @@ return {
     },
   },
   update = function(tab, opts)
+    foreground_process_name = ''
+
     -- get the foreground process name if available
     if tab.active_pane and tab.active_pane.foreground_process_name then
       foreground_process_name = tab.active_pane.foreground_process_name
