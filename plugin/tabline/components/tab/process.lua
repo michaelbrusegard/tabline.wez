@@ -78,7 +78,19 @@ return {
       foreground_process_name = foreground_process_name:match('([^/\\]+)[/\\]?$') or foreground_process_name
     end
 
-    -- fallback to the title if the foreground process name is unavailable
+    -- fallback: try wezterm.mux.get_pane() for mux domains where
+    -- foreground_process_name is unavailable in PaneInformation
+    if foreground_process_name == '' and tab.active_pane then
+      local ok, mux_pane = pcall(wezterm.mux.get_pane, tab.active_pane.pane_id)
+      if ok and mux_pane then
+        local proc_name = mux_pane:get_foreground_process_name()
+        if proc_name and proc_name ~= '' then
+          foreground_process_name = proc_name:match('([^/\\]+)[/\\]?$') or proc_name
+        end
+      end
+    end
+
+    -- fallback to the title if the foreground process name is still unavailable
     -- Wezterm uses OSC 1/2 escape sequences to guess the process name and set the title
     -- see https://wezfurlong.org/wezterm/config/lua/pane/get_title.html
     -- title defaults to 'wezterm' if another name is unavailable
