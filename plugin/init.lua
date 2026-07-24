@@ -13,7 +13,8 @@ function plugin_package_path()
   local basename = "tabline.wez"
 
   -- simple encoding map (incomplete, though should work fine unless plugin is
-  -- installed locally into the subfolder with really weird name)
+  -- installed locally into the subfolder with really weird name). This mirrors
+  -- the way wezterm encodes plugin URLs into the component/subdir name.
   local encmap = {
     [":"] = "sCs",
     ["/"] = "sZs",
@@ -22,47 +23,30 @@ function plugin_package_path()
     ["%"]  = "sPs",
   }
 
-  local components = {
-    string.format("https://github.com/michaelbrusegard/%s", basename),
-    string.format("https://github.com/michaelbrusegard/%s/", basename),
-    string.format("http://github.com/michaelbrusegard/%s", basename),
-    string.format("http://github.com/michaelbrusegard/%s/", basename),
-    basename,
-  }
-
-  local i = nil
-  for i = 1, #components do
-    components[i] = components[i]:gsub("[%:%/%\\%.%%]", encmap)
-  end
-
-  -- add unescaped name "as-is". Covers the case when plugin is installed
-  -- into $XDG_DATA_HOME/wezterm/plugins via direct clone
-  components[#components+1] = basename
+  -- Encoded repo name as it appears at the end of an encoded plugin component,
+  -- e.g. "tabline.wez" -> "tablinesDswez". We match on the repo name only,
+  -- independent of the GitHub user/org, so forks resolve to their own checkout
+  -- instead of always pointing back at the upstream author.
+  local enc_basename = basename:gsub("[%:%/%\\%.%%]", encmap)
+  -- Pattern-safe basename for matching raw (unencoded) local filesystem paths.
+  local pat_basename = basename:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 
   local plugin, plugin_subdir, my_package_subdir = {}, "", nil
   for _, plugin in ipairs(wezterm.plugin.list()) do
     plugin_subdir = plugin.component
-    for i = 1, #components do
 
-      -- this one covers both (https:// and http://) cause ":" is translated to "sCs"
-      if plugin_subdir:sub(1, 5) == "https" then
-        if plugin_subdir == components[i] then
-          my_package_subdir = plugin_subdir
-          break
-        end
-      elseif plugin_subdir:sub(1, 7) == "filesCs" then
-        -- there is no way predict the full local path. Therefore, the best
-        -- can be done here is checking the "leaf" folder
-        if plugin_subdir:match("s[BZ]s" .. components[i] .. "$") ~= nil then
-          my_package_subdir = plugin_subdir
-          break
-        end
-      elseif plugin_subdir == components[i] then
-        -- this one handles the case when plugin whas cloned "as is" somewhere
-        -- into $XDG_DATA_HOME/weztermp/plugins
-        my_package_subdir = plugin_subdir
-        break
-      end
+    if plugin_subdir == basename or plugin_subdir == enc_basename then
+      -- installed under the bare repo name (e.g. direct clone into
+      -- $XDG_DATA_HOME/wezterm/plugins), or as the bare encoded name
+      my_package_subdir = plugin_subdir
+    elseif plugin_subdir:match("s[BZ]s" .. enc_basename .. "s[BZ]s$")
+      or plugin_subdir:match("s[BZ]s" .. enc_basename .. "$") then
+      -- encoded URL/path whose leaf folder is this repo, with or without a
+      -- trailing separator; the user/org portion is ignored on purpose
+      my_package_subdir = plugin_subdir
+    elseif plugin_subdir:match("[/\\]" .. pat_basename .. "[/\\]?$") then
+      -- raw (unencoded) local path whose leaf folder is this repo
+      my_package_subdir = plugin_subdir
     end
 
     if my_package_subdir then
@@ -71,8 +55,8 @@ function plugin_package_path()
   end
 
   if not my_package_subdir then
-    -- fallback to the most probable (derived from official github address) option
-    my_package_subdir = components[1]
+    -- fallback to the bare repo name (best guess when nothing matched)
+    my_package_subdir = enc_basename
   end
 
   return plugin_dir
